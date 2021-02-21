@@ -7,7 +7,7 @@ migrate:
 start:
 	docker-compose up -d
 
-start:
+build:
 	docker-compose up -d --build
 
 down:
