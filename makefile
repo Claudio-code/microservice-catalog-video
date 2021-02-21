@@ -20,4 +20,4 @@ rm:
 	docker-compose rm
 
 dump:
-	composer dump-autoload
+	docker exec -it micro-videos-app bash -c  "composer dump-autoload"
