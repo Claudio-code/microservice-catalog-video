@@ -22,10 +22,10 @@ You'll need [docker](https://www.docker.com) and [docker-compose](https://docs.d
 
 - Build containers
 ```
- docker-compose up -d --build
+ make build
 ```
 
 - Start containers
 ```
- docker-compose up -d
+ make start
 ```
