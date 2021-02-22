@@ -19,33 +19,24 @@ class Repository
 
     public function create(array $data): Model
     {
-        foreach ($data as $key => $value) {
-            if ('password' == $key) {
-                $options = ['memory_cost' => 2048, 'time_cost' => 4, 'threads' => 3];
-                $this->model[$key] = password_hash($value, PASSWORD_ARGON2I, $options);
-
-                continue;
-            }
-            $this->model[$key] = $value;
-        }
-        $this->model->save();
-
-        return $this->model;
+        return $this->model::create($data);
     }
 
     public function update(array $data): Model
     {
-        $this->setModel($this->show($data['id']));
-        foreach ($data as $key => $value) {
-            $this->model[$key] = $value;
-        }
-        $this->model->update();
+        $this->model->update($data);
 
         return $this->model;
     }
 
-    public function delete(int $id): void
+    public function delete(int | null $id = null): void
     {
+        if (!$id) {
+            $this->model->delete();
+
+            return;
+        }
+
         $this->show($id)->delete();
     }
 

@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryCreateRequest;
 use App\Models\Category;
+use Catalog\Category\CreateCategory;
+use Catalog\Category\DeleteCategory;
 use Catalog\Category\ListAllCategory;
+use Catalog\Category\UpdateCategory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
     public function __construct(
-        private ListAllCategory $listAllCategory
+        private ListAllCategory $listAllCategory,
+        private CreateCategory $createCategory,
+        private UpdateCategory $updateCategory,
+        private DeleteCategory $deleteCategory,
     ) {
     }
 
@@ -21,9 +28,11 @@ class CategoryController extends Controller
         ;
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(CategoryCreateRequest $categoryCreateRequest): JsonResponse
     {
-        return response()->json();
+        $category = $this->createCategory->execute($categoryCreateRequest->all());
+
+        return response()->json($category, 201);
     }
 
     public function show(Category $category): JsonResponse
@@ -31,13 +40,17 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
-    public function update(Request $request, Category $category): JsonResponse
+    public function update(CategoryCreateRequest $categoryCreateRequest, Category $category): JsonResponse
     {
-        return response()->json();
+        $category = $this->updateCategory->execute($categoryCreateRequest->all(), $category);
+
+        return response()->json($category);
     }
 
-    public function destroy(Category $category): JsonResponse
+    public function destroy(Category $category): Response
     {
-        return response()->json();
+        $this->deleteCategory->execute($category);
+
+        return response()->noContent();
     }
 }

@@ -4,9 +4,8 @@ namespace Catalog\Category;
 
 use App\Models\Category;
 use Catalog\Repository;
-use Illuminate\Database\Eloquent\Model;
 
-class CreateCategory
+class DeleteCategory
 {
     private Repository $repository;
 
@@ -15,8 +14,9 @@ class CreateCategory
         $this->repository = new Repository($category);
     }
 
-    public function execute(array $data): Model
+    public function execute(Category $category): void
     {
-        return $this->repository->create($data);
+        $this->repository->setModel($category);
+        $this->repository->delete();
     }
 }
