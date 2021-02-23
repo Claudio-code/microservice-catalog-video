@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
+use App\Models\Genre;
 use Illuminate\Database\Seeder;
 
-class CategorySeeder extends Seeder
+class GenreSeeder extends Seeder
 {
     public function run(): void
     {
-        Category::factory()->count(30)->create();
+        Genre::factory()->count(30)->create();
     }
 }

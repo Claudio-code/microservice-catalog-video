@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Category\Controller as CategoryController;
+use App\Http\Controllers\Api\Genre\Controller as GenreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('categories', CategoryController::class, ['except' => ['create', 'edit']]);
+Route::resource('genre', GenreController::class, ['except' => ['create', 'edit']]);
