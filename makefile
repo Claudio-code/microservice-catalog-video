@@ -10,6 +10,9 @@ migration:
 require:
 	.cli/composer-add-dependency.sh
 
+model:
+	.cli/make-model.sh
+
 start:
 	docker-compose up -d
 

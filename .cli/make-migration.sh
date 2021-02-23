@@ -1,5 +1,3 @@
-
-
 echo "add your migration name"
 read migrationName
 
