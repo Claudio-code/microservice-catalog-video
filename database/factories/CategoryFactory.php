@@ -23,7 +23,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'description' => rand(1, 10) % 2 == 0 ? $this->faker->sentence : null,
+            'description' => 0 == rand(1, 10) % 2 ? $this->faker->sentence : null,
         ];
     }
 }
