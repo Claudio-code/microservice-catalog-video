@@ -5,7 +5,7 @@ namespace Catalog\Category;
 use App\Models\Category;
 use Catalog\Repository;
 
-class DeleteCategory
+class DeleteCategoryFeature
 {
     private Repository $repository;
 

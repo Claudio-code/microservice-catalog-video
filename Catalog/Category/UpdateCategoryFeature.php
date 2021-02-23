@@ -6,7 +6,7 @@ use App\Models\Category;
 use Catalog\Repository;
 use Illuminate\Database\Eloquent\Model;
 
-class CreateCategory
+class UpdateCategoryFeature
 {
     private Repository $repository;
 
@@ -15,8 +15,10 @@ class CreateCategory
         $this->repository = new Repository($category);
     }
 
-    public function execute(array $data): Model
+    public function execute(array $data, Category $category): Model
     {
-        return $this->repository->create($data);
+        $this->repository->setModel($category);
+
+        return $this->repository->update($data);
     }
 }

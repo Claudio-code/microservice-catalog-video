@@ -6,7 +6,7 @@ use App\Models\Category;
 use Catalog\Repository;
 use Illuminate\Database\Eloquent\Collection;
 
-class ListAllCategory
+class ListAllCategoryFeature
 {
     private Repository $repository;
 
