@@ -1,12 +1,12 @@
 <?php
 
-namespace Catalog\Category;
+namespace Catalog\Category\CreateCategory;
 
 use App\Models\Category;
 use Catalog\Repository;
 use Illuminate\Database\Eloquent\Model;
 
-class UpdateCategoryFeature
+class CreateCategoryFeature
 {
     private Repository $repository;
 
@@ -15,10 +15,8 @@ class UpdateCategoryFeature
         $this->repository = new Repository($category);
     }
 
-    public function execute(array $data, Category $category): Model
+    public function execute(CategoryDTO $categoryDTO): Model
     {
-        $this->repository->setModel($category);
-
-        return $this->repository->update($data);
+        return $this->repository->create($categoryDTO);
     }
 }

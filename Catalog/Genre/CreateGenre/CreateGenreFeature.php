@@ -1,12 +1,12 @@
 <?php
 
-namespace Catalog\Genre;
+namespace Catalog\Genre\CreateGenre;
 
 use App\Models\Genre;
 use Catalog\Repository;
 use Illuminate\Database\Eloquent\Model;
 
-class UpdateGenreFeature
+class CreateGenreFeature
 {
     private Repository $repository;
 
@@ -15,10 +15,8 @@ class UpdateGenreFeature
         $this->repository = new Repository($genre);
     }
 
-    public function execute(array $data, Genre $genre): Model
+    public function execute(GenreDTO $genreDTO): Model
     {
-        $this->repository->setModel($genre);
-
-        return $this->repository->update($data);
+        return $this->repository->create($genreDTO);
     }
 }

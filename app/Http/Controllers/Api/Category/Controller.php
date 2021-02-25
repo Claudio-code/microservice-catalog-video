@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api\Category;
 
 use App\Http\Controllers\Controller as AppController;
 use App\Models\Category;
-use Catalog\Category\CreateCategoryFeature;
+use Catalog\Category\CreateCategory\CategoryDTO;
+use Catalog\Category\CreateCategory\CreateCategoryFeature;
 use Catalog\Category\DeleteCategoryFeature;
 use Catalog\Category\ListAllCategoryFeature;
-use Catalog\Category\UpdateCategoryFeature;
+use Catalog\Category\UpdateCategory\UpdateCategoryFeature;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -24,7 +25,9 @@ class Controller extends AppController
         CreateCategoryFeature $createCategory,
         FormRequest $formRequest,
     ): JsonResponse {
-        $category = $createCategory->execute($formRequest->all());
+        $category = $createCategory->execute(CategoryDTO::factory(
+            $formRequest->all()
+        ));
 
         return response()->json($category, 201);
     }
@@ -39,7 +42,10 @@ class Controller extends AppController
         FormRequest $formRequest,
         Category $category,
     ): JsonResponse {
-        $category = $updateCategory->execute($formRequest->all(), $category);
+        $category = $updateCategory->execute(
+            CategoryDTO::factory($formRequest->all()),
+            $category,
+        );
 
         return response()->json($category);
     }

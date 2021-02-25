@@ -17,14 +17,14 @@ class Repository
         return $this->model::all();
     }
 
-    public function create(array $data): Model
+    public function create(DataTransferObjectDecorator $dataTransferObjectDecorator): Model
     {
-        return $this->model::create($data);
+        return $this->model::create($dataTransferObjectDecorator->getAllData());
     }
 
-    public function update(array $data): Model
+    public function update(DataTransferObjectDecorator $dataTransferObjectDecorator): Model
     {
-        $this->model->update($data);
+        $this->model->update($dataTransferObjectDecorator->getAllData());
 
         return $this->model;
     }
@@ -37,10 +37,10 @@ class Repository
             return;
         }
 
-        $this->show($id)->delete();
+        $this->show($id)?->delete();
     }
 
-    public function show(int $id): Model
+    public function show(int $id): ?Model
     {
         return $this->model::find($id);
     }

@@ -13,7 +13,12 @@ class Genre extends Model
     use SoftDeletes;
     use Uuid;
 
+    /** @var string[] */
     protected $fillable = ['name', 'is_active'];
+
+    /** @var string[] */
     protected $dates = ['deleted_at'];
+
+    /** @var string[] */
     protected $casts = ['id' => 'string'];
 }

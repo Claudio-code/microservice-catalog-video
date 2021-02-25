@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller as AppController;
 use App\Models\Genre;
 use Catalog\Genre\DeleteGenreFeature;
 use Catalog\Genre\ListAllGenreFeature;
-use Catalog\Genre\UpdateGenreFeature;
-use CreateGenreFeature;
+use Catalog\Genre\CreateGenre\CreateGenreFeature;
+use Catalog\Genre\CreateGenre\GenreDTO;
+use Catalog\Genre\UpdateGenre\UpdateGenreFeature;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -18,16 +19,11 @@ class Controller extends AppController
         return response()->json($listAllGenreFeature->execute());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function store(
         FormRequest $formRequest,
         CreateGenreFeature $createGenreFeature,
     ): JsonResponse {
-        $genre = $createGenreFeature->execute($formRequest->all());
+        $genre = $createGenreFeature->execute(GenreDTO::factory($formRequest->all()));
 
         return response()->json($genre, 201);
     }
@@ -42,7 +38,10 @@ class Controller extends AppController
         FormRequest $formRequest,
         Genre $genre,
     ): JsonResponse {
-        $genre = $updateGenreFeature->execute($formRequest->all(), $genre);
+        $genre = $updateGenreFeature->execute(
+            GenreDTO::factory($formRequest->all()),
+            $genre
+        );
 
         return response()->json($genre, 202);
     }
