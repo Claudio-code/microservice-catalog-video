@@ -6,10 +6,13 @@ use App\Models\Category;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
 {
+    use DatabaseMigrations;
+
     public function testFillable(): void
     {
         $category = new Category();
