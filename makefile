@@ -16,6 +16,9 @@ require:
 model:
 	.cli/make-model.sh
 
+new-test:
+	.cli/make-test.sh
+
 start:
 	docker-compose up -d
 
