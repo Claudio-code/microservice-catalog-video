@@ -1,28 +1,47 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Models;
 
 use App\Models\Category;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
 {
-    use DatabaseMigrations;
+    private Category $category;
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->category = new Category();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
 
     public function testFillable(): void
     {
-        $category = new Category();
         $data = [
             'name',
             'description',
             'is_active',
         ];
 
-        $this->assertEquals($data, $category->getFillable());
+        $this->assertEquals($data, $this->category->getFillable());
     }
 
     public function testIfUseTraits(): void
