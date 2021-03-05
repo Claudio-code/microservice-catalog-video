@@ -28,8 +28,20 @@ class CategoryTest extends TestCase
             'name' => 'casas212'
         ]);
         Category::destroy([$category->id]);
-        $categories = Category::withoutTrashed()->get();
+        $categories = Category::onlyTrashed()->get()->toArray();
 
         $this->assertCount(1, $categories);
+    }
+
+    public function testCreate(): void
+    {
+        $category = Category::create([
+            'name' => 'casas12',
+            'is_active' => true
+        ]);
+
+        $this->assertEquals('casas12', $category->name);
+        $this->assertNull($category->description);
+        $this->assertTrue($category->is_active);
     }
 }

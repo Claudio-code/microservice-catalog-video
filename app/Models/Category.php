@@ -20,5 +20,8 @@ class Category extends Model
     protected $dates = ['deleted_at'];
 
     /** @var string[] */
-    protected $casts = ['id' => 'string'];
+    protected $casts = ['id' => 'string', 'is_active' => 'boolean'];
+
+    /** @var bool $incrementing */
+    public $incrementing = false;
 }

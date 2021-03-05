@@ -17,8 +17,7 @@ class Controller extends AppController
     public function index(ListAllCategoryFeature $listAllCategory): JsonResponse
     {
         return response()
-            ->json($listAllCategory->execute())
-        ;
+            ->json($listAllCategory->execute());
     }
 
     public function store(
