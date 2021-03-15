@@ -13,7 +13,6 @@ class GenreFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'is_active' => $this->faker->boolean,
         ];
     }
 }
