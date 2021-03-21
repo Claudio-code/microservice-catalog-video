@@ -19,14 +19,20 @@ class Repository
 
     public function create(DataTransferObjectDecorator $dataTransferObjectDecorator): Model
     {
-        return $this->model::create($dataTransferObjectDecorator->getAllData());
+        /** @var Model */
+        $model = $this->model::create($dataTransferObjectDecorator->getAllData());
+        $model->refresh();
+
+        return $model;
     }
 
     public function update(DataTransferObjectDecorator $dataTransferObjectDecorator): Model
     {
-        $this->model->update($dataTransferObjectDecorator->getAllData());
+        /** @var Model */
+        $model = $this->model->update($dataTransferObjectDecorator->getAllData());
+        $model->refresh();
 
-        return $this->model;
+        return $model;
     }
 
     public function delete(int | null $id = null): void
