@@ -25,16 +25,7 @@ class GenreDTO extends DataTransferObjectDecorator
     /** @param mixed[] $data */
     public static function factory(array $data): self
     {
-        [
-            'name' => $name,
-            'is_active' => $is_active,
-
-        ] = $data;
-
-        return new self(
-            $name,
-            $is_active
-        );
+        return new self(...$data);
     }
 
     /** @return mixed[] */

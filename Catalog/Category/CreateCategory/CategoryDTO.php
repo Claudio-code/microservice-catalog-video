@@ -7,23 +7,23 @@ use Catalog\DataTransferObjectDecorator;
 class CategoryDTO extends DataTransferObjectDecorator
 {
     public function __construct(
-        private string $name,
-        private string $description,
+        private ?string $name = null,
+        private ?string $description = null,
         private bool $is_active = true,
     ) {
     }
 
-    public function getName() : string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getDescription() : string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function getIsActive() : bool
+    public function getIsActive(): bool
     {
         return $this->is_active;
     }
@@ -31,18 +31,7 @@ class CategoryDTO extends DataTransferObjectDecorator
     /** @param mixed[] $data */
     public static function factory(array $data): self
     {
-        [
-            'name' => $name,
-            'description' => $description,
-            'is_active' => $is_active,
-
-        ] = $data;
-
-        return new self(
-            $name,
-            $description,
-            $is_active
-        );
+        return new self(...$data);
     }
 
     /** @return mixed[] */
