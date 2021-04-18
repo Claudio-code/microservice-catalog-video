@@ -5,6 +5,7 @@ namespace Tests\Feature\Api\Http\Controller;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -83,5 +84,27 @@ class CategoryControllerTest extends TestCase
             ->assertStatus(422)
             ->assertJsonMissingValidationErrors(['is_active'])
             ->assertJsonValidationErrors(['name']);
+    }
+
+    public function testRemoveCategory(): void
+    {
+        /** @var Category */
+        $category = Category::factory()->create();
+        $response = $this->json('DELETE', route('categories.destroy', [
+            'category' => $category->id
+        ]));
+
+        $response
+            ->assertStatus(204)
+            ->assertNoContent();
+    }
+
+    public function testRemoveInvalidCategory(): void
+    {
+        $response = $this->json('DELETE', route('categories.destroy', [
+            'category' => RamseyUuid::uuid4()
+        ]));
+
+        $response->assertStatus(404);
     }
 }
