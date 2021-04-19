@@ -28,11 +28,10 @@ class Repository
 
     public function update(DataTransferObjectDecorator $dataTransferObjectDecorator): Model
     {
-        /** @var Model */
-        $model = $this->model->update($dataTransferObjectDecorator->getAllData());
-        $model->refresh();
+        $this->model->update($dataTransferObjectDecorator->getAllData());
+        $this->model->refresh();
 
-        return $model;
+        return $this->model;
     }
 
     public function delete(int | null $id = null): void
