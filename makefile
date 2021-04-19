@@ -10,6 +10,9 @@ migration:
 run-all-tests:
 	docker exec -it micro-videos-app bash -c  "vendor/bin/phpunit"
 
+list-all-routes:
+	docker exec -it micro-videos-app bash -c  "php artisan route:list"
+
 require:
 	.cli/composer-add-dependency.sh
 
