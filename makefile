@@ -39,3 +39,6 @@ rm:
 
 dump:
 	docker exec -it micro-videos-app bash -c  "composer dump-autoload"
+
+fix-all:
+	docker exec -it micro-videos-app bash -c  "composer run-script php-cs-fixer"
