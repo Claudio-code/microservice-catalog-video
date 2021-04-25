@@ -6,13 +6,12 @@ use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Ramsey\Uuid\Uuid as RamseyUuid;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Tests\Traits\TestValidations;
 
 class CategoryControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, TestValidations;
 
     public function testIndex(): void
     {
@@ -48,15 +47,14 @@ class CategoryControllerTest extends TestCase
             'is_active' => 'dq'
         ]));
 
-        $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['name'])
-            ->assertJsonFragment([
-                trans('validation.boolean', ['attribute' => 'is active'])
-            ])
-            ->assertJsonFragment([
+        $this->assertInvalidationJson(
+            $response,
+            ['name', 'is_active'],
+            [
+                trans('validation.boolean', ['attribute' => 'is active']),
                 trans('validation.max.string', ['attribute' => 'name', 'max' => 255])
-            ]);
+            ]
+        );
     }
 
     public function testInvalidationDataPost(): void
@@ -66,24 +64,25 @@ class CategoryControllerTest extends TestCase
             'is_active' => 'dq'
         ]));
 
-        $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['name'])
-            ->assertJsonFragment([
-                trans('validation.boolean', ['attribute' => 'is active'])
-            ])
-            ->assertJsonFragment([
+        $this->assertInvalidationJson(
+            $response,
+            ['name', 'is_active'],
+            [
+                trans('validation.boolean', ['attribute' => 'is active']),
                 trans('validation.max.string', ['attribute' => 'name', 'max' => 255])
-            ]);
+            ]
+        );
     }
 
     public function testInvalidationJson(): void
     {
         $response = $this->json('POST', route('categories.store', []));
-        $response
-            ->assertStatus(422)
-            ->assertJsonMissingValidationErrors(['is_active'])
-            ->assertJsonValidationErrors(['name']);
+        $this->assertInvalidationJson(
+            $response,
+            ['name'],
+            [],
+            ['is_active']
+        );
     }
 
     public function testRemoveCategory(): void
