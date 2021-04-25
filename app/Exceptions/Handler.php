@@ -26,7 +26,6 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
