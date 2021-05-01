@@ -2,9 +2,9 @@
 
 namespace Catalog\Genre\CreateGenre;
 
-use Catalog\DataTransferObjectDecorator;
+use Catalog\AbstractDataTransferObject;
 
-class GenreDTO extends DataTransferObjectDecorator
+class GenreDTO extends AbstractDataTransferObject
 {
     public function __construct(
         private string $name,

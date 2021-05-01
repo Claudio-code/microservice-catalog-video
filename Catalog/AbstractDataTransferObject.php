@@ -2,7 +2,7 @@
 
 namespace Catalog;
 
-abstract class DataTransferObjectDecorator
+abstract class AbstractDataTransferObject
 {
     /** @var array<string, string|bool> */
     private array $data = [];

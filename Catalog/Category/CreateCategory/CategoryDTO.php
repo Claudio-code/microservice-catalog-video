@@ -2,9 +2,9 @@
 
 namespace Catalog\Category\CreateCategory;
 
-use Catalog\DataTransferObjectDecorator;
+use Catalog\AbstractDataTransferObject;
 
-class CategoryDTO extends DataTransferObjectDecorator
+class CategoryDTO extends AbstractDataTransferObject
 {
     public function __construct(
         private ?string $name = null,

@@ -17,18 +17,18 @@ class Repository
         return $this->model::all();
     }
 
-    public function create(DataTransferObjectDecorator $dataTransferObjectDecorator): Model
+    public function create(AbstractDataTransferObject $dataTransferObject): Model
     {
         /** @var Model */
-        $model = $this->model::create($dataTransferObjectDecorator->getAllData());
+        $model = $this->model::create($dataTransferObject->getAllData());
         $model->refresh();
 
         return $model;
     }
 
-    public function update(DataTransferObjectDecorator $dataTransferObjectDecorator): Model
+    public function update(AbstractDataTransferObject $dataTransferObject): Model
     {
-        $this->model->update($dataTransferObjectDecorator->getAllData());
+        $this->model->update($dataTransferObject->getAllData());
         $this->model->refresh();
 
         return $this->model;

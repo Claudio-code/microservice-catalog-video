@@ -3,6 +3,7 @@
 namespace Catalog\Category\CreateCategory;
 
 use App\Models\Category;
+use Catalog\AbstractDataTransferObject;
 use Catalog\Repository;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,7 @@ class CreateCategoryFeature
         $this->repository = new Repository($category);
     }
 
-    public function execute(CategoryDTO $categoryDTO): Model
+    public function execute(AbstractDataTransferObject $categoryDTO): Model
     {
         return $this->repository->create($categoryDTO);
     }
