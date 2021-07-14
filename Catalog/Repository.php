@@ -34,7 +34,7 @@ class Repository
         return $this->model;
     }
 
-    public function delete(int | null $id = null): void
+    public function delete(string | null $id = null): void
     {
         if (!$id) {
             $this->model->delete();
@@ -45,9 +45,9 @@ class Repository
         $this->show($id)?->delete();
     }
 
-    public function show(int $id): ?Model
+    public function show(string $id): ?Model
     {
-        return $this->model::find($id);
+        return $this->model::findOrFail($id);
     }
 
     public function getModel(): Model

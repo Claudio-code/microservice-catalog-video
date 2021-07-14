@@ -7,6 +7,7 @@ use App\Models\Category;
 use Catalog\Category\CreateCategory\CategoryDTO;
 use Catalog\Category\CreateCategory\CreateCategoryFeature;
 use Catalog\Category\DeleteCategoryFeature;
+use Catalog\Category\FindOneCategory\FindOneCategoryFeature;
 use Catalog\Category\ListAllCategoryFeature;
 use Catalog\Category\UpdateCategory\UpdateCategoryFeature;
 use Illuminate\Http\JsonResponse;
@@ -31,9 +32,11 @@ class Controller extends AppController
         return response()->json($category, 201);
     }
 
-    public function show(Category $category): JsonResponse
-    {
-        return response()->json($category);
+    public function show(
+        string $category,
+        FindOneCategoryFeature $feature,
+    ): JsonResponse {
+        return response()->json($feature->execute($category));
     }
 
     public function update(

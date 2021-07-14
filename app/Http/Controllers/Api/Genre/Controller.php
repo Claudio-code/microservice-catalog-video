@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Genre;
 use App\Http\Controllers\Controller as AppController;
 use App\Models\Genre;
 use Catalog\Genre\DeleteGenreFeature;
+use Catalog\Genre\FindOneGenre\FindOneGenreFeature;
 use Catalog\Genre\ListAllGenreFeature;
 use Catalog\Genre\CreateGenre\CreateGenreFeature;
 use Catalog\Genre\CreateGenre\GenreDTO;
@@ -28,9 +29,11 @@ class Controller extends AppController
         return response()->json($genre, 201);
     }
 
-    public function show(Genre $genre): JsonResponse
-    {
-        return response()->json($genre);
+    public function show(
+        string $genre,
+        FindOneGenreFeature $feature,
+    ): JsonResponse {
+        return response()->json($feature->execute($genre));
     }
 
     public function update(
