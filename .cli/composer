@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker exec -it lara-app composer $@
+docker exec -it micro-videos-app composer $@
