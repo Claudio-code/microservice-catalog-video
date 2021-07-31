@@ -1,5 +1,3 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlRm0fXDumXQ2dpVTaga9A97xLR4EbE35DGQ&usqp=CAU" width="400"></a></p>
-
 ## About Project
 
 This service will control the videos sent to another golang encoder service where it will be processed.
