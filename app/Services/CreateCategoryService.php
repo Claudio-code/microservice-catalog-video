@@ -1,14 +1,13 @@
 <?php
 
+namespace App\Services;
 
-namespace Catalog\Category\FindOneCategory;
-
-
+use App\DTO\CategoryDTO;
 use App\Models\Category;
-use Catalog\Repository;
+use App\Repositories\Repository;
 use Illuminate\Database\Eloquent\Model;
 
-class FindOneCategoryFeature
+class CreateCategoryService
 {
     private Repository $repository;
 
@@ -17,8 +16,8 @@ class FindOneCategoryFeature
         $this->repository = new Repository($category);
     }
 
-    public function execute(string $categoryId): ?Model
+    public function execute(CategoryDTO $categoryDTO): Model
     {
-        return $this->repository->show($categoryId);
+        return $this->repository->create($categoryDTO);
     }
 }

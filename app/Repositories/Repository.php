@@ -1,7 +1,8 @@
 <?php
 
-namespace Catalog;
+namespace App\Repositories;
 
+use App\DTO\DataTransferObject;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,24 +18,24 @@ class Repository
         return $this->model::all();
     }
 
-    public function create(AbstractDataTransferObject $dataTransferObject): Model
+    public function create(DataTransferObject $dataTransferObject): Model
     {
         /** @var Model */
-        $model = $this->model::create($dataTransferObject->getAllData());
+        $model = $this->model::create($dataTransferObject->toArray());
         $model->refresh();
 
         return $model;
     }
 
-    public function update(AbstractDataTransferObject $dataTransferObject): Model
+    public function update(DataTransferObject $dataTransferObject): Model
     {
-        $this->model->update($dataTransferObject->getAllData());
+        $this->model->update($dataTransferObject->toArray());
         $this->model->refresh();
 
         return $this->model;
     }
 
-    public function delete(string | null $id = null): void
+    public function delete(?string $id = null): void
     {
         if (!$id) {
             $this->model->delete();
@@ -42,10 +43,10 @@ class Repository
             return;
         }
 
-        $this->show($id)?->delete();
+        $this->show($id)->delete();
     }
 
-    public function show(string $id): ?Model
+    public function show(string $id): Model
     {
         return $this->model::findOrFail($id);
     }

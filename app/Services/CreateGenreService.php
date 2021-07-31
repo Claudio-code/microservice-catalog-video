@@ -1,14 +1,13 @@
 <?php
 
+namespace App\Services;
 
-namespace Catalog\Genre\FindOneGenre;
-
-
+use App\DTO\GenreDTO;
 use App\Models\Genre;
-use Catalog\Repository;
+use App\Repositories\Repository;
 use Illuminate\Database\Eloquent\Model;
 
-class FindOneGenreFeature
+class CreateGenreService
 {
     private Repository $repository;
 
@@ -17,8 +16,8 @@ class FindOneGenreFeature
         $this->repository = new Repository($genre);
     }
 
-    public function execute(string $genreId): ?Model
+    public function execute(GenreDTO $genreDTO): Model
     {
-        return $this->repository->show($genreId);
+        return $this->repository->create($genreDTO);
     }
 }

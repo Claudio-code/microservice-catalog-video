@@ -2,58 +2,48 @@
 
 namespace App\Http\Controllers\Api\Genre;
 
+use App\DTO\GenreDTO;
 use App\Http\Controllers\Controller as AppController;
-use App\Models\Genre;
-use Catalog\Genre\DeleteGenreFeature;
-use Catalog\Genre\FindOneGenre\FindOneGenreFeature;
-use Catalog\Genre\ListAllGenreFeature;
-use Catalog\Genre\CreateGenre\CreateGenreFeature;
-use Catalog\Genre\CreateGenre\GenreDTO;
-use Catalog\Genre\UpdateGenre\UpdateGenreFeature;
+use App\Services\CreateGenreService;
+use App\Services\GetAllGenreService;
+use App\Services\GetOneGenreService;
+use App\Services\RemoveGenreService;
+use App\Services\UpdateGenreService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class Controller extends AppController
 {
-    public function index(ListAllGenreFeature $listAllGenreFeature): JsonResponse
+    public function index(GetAllGenreService $service): JsonResponse
     {
-        return response()->json($listAllGenreFeature->execute());
+        return response()->json($service->execute());
     }
 
-    public function store(
-        FormRequest $formRequest,
-        CreateGenreFeature $createGenreFeature,
-    ): JsonResponse {
-        $genre = $createGenreFeature->execute(GenreDTO::factory($formRequest->all()));
-
-        return response()->json($genre, 201);
+    public function show(string $genre, GetOneGenreService $service): JsonResponse
+    {
+        return response()->json($service->execute($genre));
     }
 
-    public function show(
-        string $genre,
-        FindOneGenreFeature $feature,
-    ): JsonResponse {
-        return response()->json($feature->execute($genre));
+    public function store(FormRequest $formRequest, CreateGenreService $service): JsonResponse
+    {
+        $genre = $service->execute(GenreDTO::factory($formRequest->all()));
+
+        return response()->json($genre, Response::HTTP_CREATED);
     }
 
-    public function update(
-        UpdateGenreFeature $updateGenreFeature,
-        FormRequest $formRequest,
-        Genre $genre,
-    ): JsonResponse {
-        $genre = $updateGenreFeature->execute(
+    public function update(UpdateGenreService $service, FormRequest $formRequest, string $genre): JsonResponse
+    {
+        $genre = $service->execute(
             GenreDTO::factory($formRequest->all()),
             $genre
         );
 
-        return response()->json($genre, 202);
+        return response()->json($genre, Response::HTTP_OK);
     }
 
-    public function destroy(
-        DeleteGenreFeature $deleteGenreFeature,
-        Genre $genre,
-    ): Response {
-        $deleteGenreFeature->execute($genre);
+    public function destroy(RemoveGenreService $service, string $genre): Response
+    {
+        $service->execute($genre);
 
         return response()->noContent();
     }
