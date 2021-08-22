@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\Http\Controller;
+namespace Feature\Api\Http\Controller;
 
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
