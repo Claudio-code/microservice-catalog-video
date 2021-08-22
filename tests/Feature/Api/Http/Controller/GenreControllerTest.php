@@ -1,14 +1,15 @@
 <?php
 
-namespace Tests\Feature\Api\Http\Controller;
+namespace Feature\Api\Http\Controller;
 
 use App\Models\Genre;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use Tests\Traits\TestValidations;
 
 class GenreControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, TestValidations;
 
     public function testIndex(): void
     {
@@ -49,10 +50,14 @@ class GenreControllerTest extends TestCase
     {
         $response = $this->json('POST', route('genre.store', [
             'name' => str_repeat('a1', 326),
-            'is_active' => 'dqw dwqw2',
         ]));
 
-        $response->assertStatus(422);
+        self::assertInvalidationJson(
+            $response,
+            ['name'],
+            [],
+            ['is_active'],
+        );
     }
 
     public function testUpdate(): void
