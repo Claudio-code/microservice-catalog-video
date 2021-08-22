@@ -121,7 +121,7 @@ class CategoryControllerTest extends TestCase
         ]), ['name' => $name]);
 
         $response
-            ->assertCreated()
+            ->assertok()
             ->assertJsonFragment([
                 'is_active' => true,
                 'name' => $name,

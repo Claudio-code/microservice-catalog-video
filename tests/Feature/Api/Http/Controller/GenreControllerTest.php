@@ -84,7 +84,7 @@ class GenreControllerTest extends TestCase
         ]), ['name' => $name]);
 
         $response
-            ->assertCreated()
+            ->assertOk()
             ->assertJsonFragment([
                 'is_active' => true,
                 'name' => $name,

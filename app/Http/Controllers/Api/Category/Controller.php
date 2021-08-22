@@ -42,7 +42,7 @@ class Controller extends AppController
     {
         $category = $service->execute(CategoryDTO::factory($formRequest->all()), $category);
 
-        return response()->json($category, Response::HTTP_CREATED);
+        return response()->json($category, Response::HTTP_OK);
     }
 
     public function destroy(RemoveCategoryService $service, string $category): Response
