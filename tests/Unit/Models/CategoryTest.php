@@ -4,8 +4,8 @@ namespace Unit\Models;
 
 use App\Models\Category;
 use App\Models\Traits\Uuid;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase

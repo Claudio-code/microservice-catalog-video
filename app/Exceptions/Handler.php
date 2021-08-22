@@ -13,7 +13,6 @@ class Handler extends ExceptionHandler
      * @var mixed[]
      */
     protected $dontReport = [
-        //
     ];
 
     /**
@@ -29,7 +28,6 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            //
         });
     }
 }

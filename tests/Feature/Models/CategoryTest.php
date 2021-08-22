@@ -49,7 +49,7 @@ class CategoryTest extends TestCase
         $category->refresh();
         $category->update([
             'name' => 'testando',
-            'is_active' => false
+            'is_active' => false,
         ]);
 
         self::assertEquals('testando', $category->name);

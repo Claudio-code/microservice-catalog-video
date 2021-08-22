@@ -23,7 +23,7 @@ trait TestValidations
         }
     }
 
-    protected static function assertKeysInResponseBody(array $keys,  TestResponse $response): void
+    protected static function assertKeysInResponseBody(array $keys, TestResponse $response): void
     {
         $responseArray = json_decode($response->content(), true);
         self::assertNotEmpty($responseArray);

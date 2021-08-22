@@ -4,8 +4,6 @@ namespace Feature\Models;
 
 use App\Models\Genre;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class GenreTest extends TestCase
@@ -53,7 +51,7 @@ class GenreTest extends TestCase
         $genre = Genre::factory()->create();
         $genre->refresh();
         $genre->update([
-            'name' => 'teste2'
+            'name' => 'teste2',
         ]);
 
         self::assertEquals('teste2', $genre->name);

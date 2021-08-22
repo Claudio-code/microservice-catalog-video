@@ -22,6 +22,6 @@ class Category extends Model
     /** @var string[] */
     protected $casts = ['id' => 'string', 'is_active' => 'boolean'];
 
-    /** @var bool $incrementing */
+    /** @var bool */
     public $incrementing = false;
 }

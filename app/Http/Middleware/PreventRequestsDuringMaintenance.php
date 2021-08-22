@@ -12,6 +12,5 @@ class PreventRequestsDuringMaintenance extends Middleware
      * @var string[]
      */
     protected $except = [
-        //
     ];
 }
