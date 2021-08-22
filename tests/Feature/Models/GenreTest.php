@@ -17,7 +17,7 @@ class GenreTest extends TestCase
         Genre::factory()->count(10)->create();
         $genres = Genre::all();
 
-        $this->assertCount(10, $genres);
+        self::assertCount(10, $genres);
     }
 
     public function testSoftDelete(): void
@@ -29,8 +29,8 @@ class GenreTest extends TestCase
         $genresActives = Genre::all();
         $genres = Genre::onlyTrashed()->get()->toArray();
 
-        $this->assertCount(1, $genres);
-        $this->assertCount(0, $genresActives);
+        self::assertCount(1, $genres);
+        self::assertCount(0, $genresActives);
     }
 
     public function testCreate(): void
@@ -42,9 +42,9 @@ class GenreTest extends TestCase
         // regex to validadate uuid v4
         $regex = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
 
-        $this->assertTrue((bool) preg_match($regex, $genre->id));
-        $this->assertEquals('teste', $genre->name);
-        $this->assertTrue($genre->is_active);
+        self::assertTrue((bool) preg_match($regex, $genre->id));
+        self::assertEquals('teste', $genre->name);
+        self::assertTrue($genre->is_active);
     }
 
     public function testUpdate(): void
@@ -56,6 +56,6 @@ class GenreTest extends TestCase
             'name' => 'teste2'
         ]);
 
-        $this->assertEquals('teste2', $genre->name);
+        self::assertEquals('teste2', $genre->name);
     }
 }

@@ -15,7 +15,7 @@ class CategoryTest extends TestCase
         Category::factory()->create();
         $categories = Category::all();
 
-        $this->assertCount(1, $categories);
+        self::assertCount(1, $categories);
     }
 
     public function testSoftDelete(): void
@@ -25,7 +25,7 @@ class CategoryTest extends TestCase
         Category::destroy([$category->id]);
         $categories = Category::onlyTrashed()->get()->toArray();
 
-        $this->assertCount(1, $categories);
+        self::assertCount(1, $categories);
     }
 
     public function testCreate(): void
@@ -37,9 +37,9 @@ class CategoryTest extends TestCase
         // regex to validadate uuid v4
         $regex = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
 
-        $this->assertTrue((bool) preg_match($regex, $category->id));
-        $this->assertEquals('casas12', $category->name);
-        $this->assertTrue($category->is_active);
+        self::assertTrue((bool) preg_match($regex, $category->id));
+        self::assertEquals('casas12', $category->name);
+        self::assertTrue($category->is_active);
     }
 
     public function testUpdate(): void
@@ -52,8 +52,8 @@ class CategoryTest extends TestCase
             'is_active' => false
         ]);
 
-        $this->assertEquals('testando', $category->name);
-        $this->assertFalse($category->is_active);
+        self::assertEquals('testando', $category->name);
+        self::assertFalse($category->is_active);
     }
 
     public function testDelete(): void
@@ -64,6 +64,6 @@ class CategoryTest extends TestCase
         $category->delete();
         $categories = Category::all()->toArray();
 
-        $this->assertEquals(0, count($categories));
+        self::assertEquals(0, count($categories));
     }
 }

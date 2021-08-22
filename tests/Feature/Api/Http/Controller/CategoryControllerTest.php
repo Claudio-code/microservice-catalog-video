@@ -47,7 +47,7 @@ class CategoryControllerTest extends TestCase
             'is_active' => 'dq'
         ]));
 
-        $this->assertInvalidationJson(
+        self::assertInvalidationJson(
             $response,
             ['name', 'is_active'],
             [
@@ -64,7 +64,7 @@ class CategoryControllerTest extends TestCase
             'is_active' => 'dq'
         ]));
 
-        $this->assertInvalidationJson(
+        self::assertInvalidationJson(
             $response,
             ['name', 'is_active'],
             [
@@ -77,7 +77,7 @@ class CategoryControllerTest extends TestCase
     public function testInvalidationJson(): void
     {
         $response = $this->json('POST', route('categories.store', []));
-        $this->assertInvalidationJson(
+        self::assertInvalidationJson(
             $response,
             ['name'],
             [],

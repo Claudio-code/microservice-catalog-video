@@ -41,7 +41,7 @@ class CategoryTest extends TestCase
             'is_active',
         ];
 
-        $this->assertEquals($data, $this->category->getFillable());
+        self::assertEquals($data, $this->category->getFillable());
     }
 
     public function testIfUseTraits(): void
@@ -50,6 +50,6 @@ class CategoryTest extends TestCase
             HasFactory::class, SoftDeletes::class, Uuid::class,
         ];
         $usedTraits = array_keys(class_uses(Category::class));
-        $this->assertEquals($traits, $usedTraits);
+        self::assertEquals($traits, $usedTraits);
     }
 }
