@@ -62,6 +62,7 @@ class GenreControllerTest extends TestCase
 
         $response = $this->json('PUT', route('genre.update', [
             'genre' => $genre->id,
+            'is_active' => true,
         ]), ['name' => 'dwq qd q']);
 
         $genre->name = 'dwq qd q';
