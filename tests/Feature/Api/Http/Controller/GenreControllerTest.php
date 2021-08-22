@@ -4,12 +4,14 @@ namespace Feature\Api\Http\Controller;
 
 use App\Models\Genre;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 use Tests\Traits\TestValidations;
 
 class GenreControllerTest extends TestCase
 {
-    use DatabaseMigrations, TestValidations;
+    use DatabaseMigrations;
+    use TestValidations;
 
     public function testIndex(): void
     {
@@ -18,7 +20,7 @@ class GenreControllerTest extends TestCase
 
         $response = $this->get(route('genre.index'));
         $response
-            ->assertStatus(200)
+            ->assertStatus(Response::HTTP_OK)
             ->assertJson([$genre->toArray()]);
     }
 
@@ -32,18 +34,29 @@ class GenreControllerTest extends TestCase
         ]));
 
         $response
-            ->assertStatus(200)
+            ->assertStatus(Response::HTTP_OK)
             ->assertJson($genre->toArray());
     }
 
     public function testCreate(): void
     {
+        $name = str_repeat('a1', 6);
         $response = $this->json('POST', route('genre.store', [
-            'name' => str_repeat('a1', 6),
+            'name' => $name,
             'is_active' => true,
         ]));
 
-        $response->assertStatus(201);
+        $response
+            ->assertCreated()
+            ->assertJsonFragment([
+                'is_active' => true,
+                'name' => $name,
+            ]);
+        self::assertKeysInResponseBody([
+            'id',
+            'name',
+            'is_active',
+        ], $response);
     }
 
     public function testCreateInvalidJson(): void
@@ -63,17 +76,24 @@ class GenreControllerTest extends TestCase
     public function testUpdate(): void
     {
         $genre = Genre::factory()->create();
-        assert($genre instanceof Genre);
+        $name = 'dwq qd q';
 
         $response = $this->json('PUT', route('genre.update', [
             'genre' => $genre->id,
             'is_active' => true,
-        ]), ['name' => 'dwq qd q']);
+        ]), ['name' => $name]);
 
-        $genre->name = 'dwq qd q';
         $response
-            ->assertStatus(202)
-            ->assertJson($genre->toArray());
+            ->assertCreated()
+            ->assertJsonFragment([
+                'is_active' => true,
+                'name' => $name,
+            ]);
+        self::assertKeysInResponseBody([
+            'id',
+            'name',
+            'is_active',
+        ], $response);
     }
 
     public function testDelete(): void
@@ -86,7 +106,7 @@ class GenreControllerTest extends TestCase
         ]));
 
         $response
-            ->assertStatus(204)
+            ->assertStatus(Response::HTTP_NO_CONTENT)
             ->assertNoContent();
     }
 }

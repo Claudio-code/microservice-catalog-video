@@ -38,7 +38,7 @@ class Controller extends AppController
             $genre
         );
 
-        return response()->json($genre, Response::HTTP_OK);
+        return response()->json($genre, Response::HTTP_CREATED);
     }
 
     public function destroy(RemoveGenreService $service, string $genre): Response
