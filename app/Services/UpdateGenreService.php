@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 class UpdateGenreService
 {
     private Repository $repository;
-
     private GetOneGenreService $service;
 
     public function __construct(Genre $genre, GetOneGenreService $service)

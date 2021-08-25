@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 class UpdateCategoyService
 {
     private Repository $repository;
-
     private GetOneCategoryService $service;
 
     public function __construct(Category $category, GetOneCategoryService $service)

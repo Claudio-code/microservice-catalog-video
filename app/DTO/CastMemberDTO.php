@@ -4,10 +4,10 @@ namespace App\DTO;
 
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
-class GenreDTO extends DataTransferObject
+class CastMemberDTO extends DataTransferObject
 {
     public string $name;
-    public bool $is_active;
+    public int $type;
 
     /**
      * @param array<string, mixed> $data
