@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\RedisKeysEnum;
 use App\Models\Genre;
 use App\Repositories\Repository;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,10 +12,6 @@ class GetAllGenreService
 {
     private Repository $repository;
 
-    private const REDIS_KEY = 'micro-videos-all-genre';
-
-    private const REDIS_TIME_TO_LIVE = 1440;
-
     public function __construct(Genre $genre)
     {
         $this->repository = new Repository($genre);
@@ -23,8 +20,8 @@ class GetAllGenreService
     public function execute(): Collection
     {
         return Cache::remember(
-            self::REDIS_KEY,
-            self::REDIS_TIME_TO_LIVE,
+            RedisKeysEnum::REDIS_KEY_ALL_GENRES,
+            RedisKeysEnum::REDIS_TIME_TO_LIVE,
             fn () => $this->repository->all()
         );
     }

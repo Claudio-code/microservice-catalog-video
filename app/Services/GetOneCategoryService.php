@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\RedisKeysEnum;
 use App\Models\Category;
 use App\Repositories\Repository;
 use Illuminate\Database\Eloquent\Model;
@@ -11,10 +12,6 @@ class GetOneCategoryService
 {
     private Repository $repository;
 
-    private const REDIS_KEY = 'micro-videos-category-id:';
-
-    private const REDIS_TIME_TO_LIVE = 1440;
-
     public function __construct(Category $category)
     {
         $this->repository = new Repository($category);
@@ -22,9 +19,11 @@ class GetOneCategoryService
 
     public function execute(string $categoryId): Model
     {
+        $key = RedisKeysEnum::REDIS_KEY_CATEGORY_BY_ID.$categoryId;
+
         return Cache::remember(
-            self::REDIS_KEY.$categoryId,
-            self::REDIS_TIME_TO_LIVE,
+            $key,
+            RedisKeysEnum::REDIS_TIME_TO_LIVE,
             fn () => $this->repository->show($categoryId)
         );
     }

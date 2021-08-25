@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\RedisKeysEnum;
 use App\Models\Category;
 use App\Repositories\Repository;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,10 +12,6 @@ class GetAllCategoriesService
 {
     private Repository $repository;
 
-    private const REDIS_KEY = 'micro-videos-all-categories';
-
-    private const REDIS_TIME_TO_LIVE = 1440;
-
     public function __construct(Category $category)
     {
         $this->repository = new Repository($category);
@@ -23,8 +20,8 @@ class GetAllCategoriesService
     public function execute(): Collection
     {
         return Cache::remember(
-            self::REDIS_KEY,
-            self::REDIS_TIME_TO_LIVE,
+            RedisKeysEnum::REDIS_KEY_ALL_CATEGORIES,
+            RedisKeysEnum::REDIS_TIME_TO_LIVE,
             fn () => $this->repository->all()
         );
     }
