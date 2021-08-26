@@ -39,7 +39,6 @@ class Repository
     {
         if (!$id) {
             $this->model->delete();
-
             return;
         }
 
