@@ -10,17 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 class UpdateCategoyService
 {
     private Repository $repository;
-    private GetOneCategoryService $service;
 
-    public function __construct(Category $category, GetOneCategoryService $service)
+    public function __construct(Category $category)
     {
-        $this->service = $service;
         $this->repository = new Repository($category);
     }
 
     public function execute(CategoryDTO $categoryDTO, string $categoryId): Model
     {
-        $category = $this->service->execute($categoryId);
+        $category = $this->repository->show($categoryId);
 
         return $this->repository
             ->setModel($category)

@@ -10,17 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 class UpdateCastMemberService
 {
     private Repository $repository;
-    private GetOneCastMemberService $service;
 
-    public function __construct(CastMember $castMember, GetOneCastMemberService $service)
+    public function __construct(CastMember $castMember)
     {
-        $this->service = $service;
         $this->repository = new Repository($castMember);
     }
 
     public function execute(CastMemberDTO $castMemberDTO, string $castMemberId): Model
     {
-        $castMember = $this->service->execute($castMemberId);
+        $castMember = $this->repository->show($castMemberId);
 
         return $this->repository
             ->setModel($castMember)

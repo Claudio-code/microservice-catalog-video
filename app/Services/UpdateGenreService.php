@@ -10,17 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 class UpdateGenreService
 {
     private Repository $repository;
-    private GetOneGenreService $service;
 
-    public function __construct(Genre $genre, GetOneGenreService $service)
+    public function __construct(Genre $genre)
     {
         $this->repository = new Repository($genre);
-        $this->service = $service;
     }
 
     public function execute(GenreDTO $genreDTO, string $genreId): Model
     {
-        $genre = $this->service->execute($genreId);
+        $genre = $this->repository->show($genreId);
 
         return $this->repository
             ->setModel($genre)
