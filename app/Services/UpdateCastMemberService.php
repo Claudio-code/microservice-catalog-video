@@ -20,7 +20,7 @@ class UpdateCastMemberService
 
     public function execute(CastMemberDTO $castMemberDTO, string $castMemberId): Model
     {
-        $castMember = $this->service->execulte($castMemberId);
+        $castMember = $this->service->execute($castMemberId);
 
         return $this->repository
             ->setModel($castMember)
