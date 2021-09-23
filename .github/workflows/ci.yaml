@@ -1,0 +1,39 @@
+name: ci-laravel-workflow
+on: [pull_request]
+jobs:
+  chek-application:
+    runs-on: ubuntu-20.04
+
+    services:
+      db:
+        image: mysql:8.0
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: db
+          DB_PORT: 3306
+          DB_DATABASE: code_micro_videos
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: install composer/npm dependencies
+        run: |
+          chown -R www-data:www-data .
+          chmod -R 777 .cli
+          composer install --no-scripts
+          npm install
+
+      - name: Prepare Laravel Application
+        run: |
+          php artisan key:generate
+          php artisan migrate
+
+      - name: Run tests using PHPUnit
+        run: vendor/bin/phpunit
