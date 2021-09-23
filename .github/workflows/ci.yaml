@@ -3,6 +3,8 @@ on: [pull_request]
 jobs:
   chek-application:
     runs-on: ubuntu-20.04
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:7.3
 
     services:
       db:
