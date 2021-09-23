@@ -24,8 +24,7 @@ jobs:
 
       - name: install composer/npm dependencies
         run: |
-          chown -R www-data:www-data .
-          chmod -R 777 .cli
+          chmod -R 777 .
           composer install --no-scripts
           npm install
 
