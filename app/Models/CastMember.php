@@ -16,7 +16,14 @@ class CastMember extends Model
     public const TYPE_DIRECTOR = 1;
     public const TYPE_ACTOR = 2;
 
+    /** @var string[] */
     protected $fillable = ['name', 'type'];
+
+    /** @var string[] */
     protected $dates = ['deleted_at'];
+
     public $incrementing = false;
+
+    /** @var string[] */
+    protected $casts = ['id' => 'string'];
 }
