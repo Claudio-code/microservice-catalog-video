@@ -6,15 +6,16 @@ RUN apk add --no-cache shadow openssl bash mysql-client nodejs npm git librdkafk
 ENV PHPIZE_DEPS autoconf file g++ gcc libc-dev make pkgconf re2c libxml2 libxml2-dev autoconf php8-dev php8-pear \
         yaml-dev pcre-dev zlib-dev libmemcached-dev cyrus-sasl-dev
 
-RUN apk add --no-cache $PHPIZE_DEPS
-
-RUN docker-php-ext-install pdo pdo_mysql
+RUN apk add --no-cache $PHPIZE_DEPS && docker-php-ext-install pdo pdo_mysql
 
 RUN pecl install -o -f redis \
     &&  rm -rf /tmp/pear \
     &&  docker-php-ext-enable redis \
     && pecl install -o -f rdkafka \
-    && docker-php-ext-enable rdkafka
+    && docker-php-ext-enable rdkafka \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 
 RUN touch /home/www-data/.bashrc | echo "PS1='\w\$ '" >> /home/www-data/.bashrc
 
@@ -31,6 +32,8 @@ RUN usermod -u 1000 www-data
 WORKDIR /var/www
 
 RUN rm -rf /var/www/html && ln -s public html
+
+RUN echo 'xdebug.mode=coverage' >> /usr/local/etc/php/php.ini
 
 USER www-data
 
