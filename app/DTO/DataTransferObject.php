@@ -51,4 +51,14 @@ class DataTransferObject extends DataTransferObjectAbstract
             preg_replace('/(?<!^)[A-Z]/', '_$0', $input) ?? ''
         );
     }
+
+    /**
+     * @param array<string, mixed> $data
+     *
+     * @throws UnknownProperties
+     */
+    public static function factory(array $data): self
+    {
+        return new self($data);
+    }
 }
