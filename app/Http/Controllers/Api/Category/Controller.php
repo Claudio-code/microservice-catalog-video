@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api\Category;
 
 use App\DTO\CategoryDTO;
 use App\Http\Controllers\Controller as AppController;
-use App\Services\CreateCategoryService;
-use App\Services\GetAllCategoriesService;
-use App\Services\GetOneCategoryService;
-use App\Services\RemoveCategoryService;
-use App\Services\UpdateCategoyService;
+use App\Services\Category\CreateCategoryService;
+use App\Services\Category\GetAllCategoriesService;
+use App\Services\Category\GetOneCategoryService;
+use App\Services\Category\RemoveCategoryService;
+use App\Services\Category\UpdateCategoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
@@ -38,7 +38,7 @@ class Controller extends AppController
     /**
      * @throws UnknownProperties
      */
-    public function update(UpdateCategoyService $service, FormRequest $formRequest, string $category): JsonResponse
+    public function update(UpdateCategoryService $service, FormRequest $formRequest, string $category): JsonResponse
     {
         $category = $service->execute(CategoryDTO::factory($formRequest->all()), $category);
 

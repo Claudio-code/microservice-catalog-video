@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\CastMember;
 
 use App\DTO\CastMemberDTO;
 use Illuminate\Database\Eloquent\Model;
 
-class UpdateCastMemberService extends AbstractService
+class UpdateCastMemberService extends CastMemberAbstractService
 {
     public function execute(CastMemberDTO $castMemberDTO, string $castMemberId): Model
     {

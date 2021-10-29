@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Genre;
 
-class RemoveGenreService extends AbstractService
+class RemoveGenreService extends GenreAbstractService
 {
     public function execute(string $genreId): void
     {

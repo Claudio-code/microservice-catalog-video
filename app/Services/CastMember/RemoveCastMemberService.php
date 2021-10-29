@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\CastMember;
 
-class RemoveCastMemberService extends AbstractService
+class RemoveCastMemberService extends CastMemberAbstractService
 {
     public function execute(string $castMemberId): void
     {

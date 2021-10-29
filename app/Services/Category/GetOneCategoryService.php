@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Category;
 
 use App\Enums\RedisKeysEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
-class GetOneCategoryService extends AbstractService
+class GetOneCategoryService extends CategoryAbstractService
 {
     public function execute(string $categoryId): Model
     {

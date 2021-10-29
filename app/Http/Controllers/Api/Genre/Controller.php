@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api\Genre;
 
 use App\DTO\GenreDTO;
 use App\Http\Controllers\Controller as AppController;
-use App\Services\CreateGenreService;
-use App\Services\GetAllGenreService;
-use App\Services\GetOneGenreService;
-use App\Services\RemoveGenreService;
-use App\Services\UpdateGenreService;
+use App\Services\Genre\CreateGenreService;
+use App\Services\Genre\GetAllGenreService;
+use App\Services\Genre\GetOneGenreService;
+use App\Services\Genre\RemoveGenreService;
+use App\Services\Genre\UpdateGenreService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 

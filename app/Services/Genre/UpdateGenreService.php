@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Genre;
 
 use App\DTO\GenreDTO;
 use Illuminate\Database\Eloquent\Model;
 
-class UpdateGenreService extends AbstractService
+class UpdateGenreService extends GenreAbstractService
 {
     public function execute(GenreDTO $genreDTO, string $genreId): Model
     {

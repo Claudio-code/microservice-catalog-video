@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api\CastMember;
 
 use App\DTO\CastMemberDTO;
 use App\Http\Controllers\Controller as AppController;
-use App\Services\CreateCastMemberService;
-use App\Services\GetAllCastMemberService;
-use App\Services\GetOneCastMemberService;
-use App\Services\RemoveCastMemberService;
-use App\Services\UpdateCastMemberService;
+use App\Services\CastMember\CreateCastMemberService;
+use App\Services\CastMember\GetAllCastMemberService;
+use App\Services\CastMember\GetOneCastMemberService;
+use App\Services\CastMember\RemoveCastMemberService;
+use App\Services\CastMember\UpdateCastMemberService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;

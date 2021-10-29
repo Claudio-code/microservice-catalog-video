@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Genre;
 
 use App\Enums\RedisKeysEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
-class GetOneGenreService extends AbstractService
+class GetOneGenreService extends GenreAbstractService
 {
     public function execute(string $genreId): Model
     {

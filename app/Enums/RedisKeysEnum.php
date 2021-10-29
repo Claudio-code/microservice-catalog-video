@@ -11,4 +11,7 @@ class RedisKeysEnum
     public const REDIS_KEY_GENRE_BY_ID = 'micro-videos-genre-id=';
     public const REDIS_KEY_ALL_CAST_MEMBER = 'micro-videos-all-cast-member';
     public const REDIS_KEY_CAST_MEMBER_BY_ID = 'micro-videos-cast-member-id=';
+    public const REDIS_KEY_VIDEO_BY_ID = 'micro-videos-video-id=';
+    public const REDIS_KEY_ALL_VIDEOS = 'micro-videos-all-videos';
+
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Category;
 
-class RemoveCategoryService extends AbstractService
+class RemoveCategoryService extends CategoryAbstractService
 {
     public function execute(string $categoryId): void
     {

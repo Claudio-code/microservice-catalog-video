@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\CastMember;
 
 use Illuminate\Foundation\Http\FormRequest as IlluminateFormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 class FormRequest extends IlluminateFormRequest
 {
@@ -11,7 +12,7 @@ class FormRequest extends IlluminateFormRequest
         return true;
     }
 
-    /** @return array<string, string> */
+    #[ArrayShape(['name' => "string", 'type' => "string"])]
     public function rules(): array
     {
         return [

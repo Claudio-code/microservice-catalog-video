@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\CastMember;
 
 use App\Enums\RedisKeysEnum;
 use App\Models\CastMember;
 use Illuminate\Support\Facades\Cache;
 
-class GetOneCastMemberService extends AbstractService
+class GetOneCastMemberService extends CastMemberAbstractService
 {
     public function execute(string $castMemberId): CastMember
     {
