@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Category;
 
 use Illuminate\Foundation\Http\FormRequest as IlluminateFormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 class FormRequest extends IlluminateFormRequest
 {
@@ -11,7 +12,7 @@ class FormRequest extends IlluminateFormRequest
         return true;
     }
 
-    /** @return array<string, string> */
+    #[ArrayShape(['name' => "string", 'is_active' => "string"])]
     public function rules(): array
     {
         return [

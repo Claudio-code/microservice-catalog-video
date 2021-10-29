@@ -2,12 +2,12 @@
 
 namespace App\Services\Category;
 
-use App\DTO\CategoryDTO;
+use App\DTO\DataTransferObject;
 use Illuminate\Database\Eloquent\Model;
 
 class UpdateCategoryService extends CategoryAbstractService
 {
-    public function execute(CategoryDTO $categoryDTO, string $categoryId): Model
+    public function execute(DataTransferObject $categoryDTO, string $categoryId): Model
     {
         $category = $this->repository->show($categoryId);
 
