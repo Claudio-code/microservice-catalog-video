@@ -40,7 +40,10 @@ class Controller extends AppController
      */
     public function update(UpdateCategoryService $service, FormRequest $formRequest, string $category): JsonResponse
     {
-        $category = $service->execute(CategoryDTO::factory($formRequest->all()), $category);
+        $category = $service->execute(
+            categoryDTO: CategoryDTO::factory($formRequest->all()),
+            categoryId: $category,
+        );
 
         return response()->json($category, Response::HTTP_OK);
     }

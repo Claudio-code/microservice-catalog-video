@@ -34,8 +34,8 @@ class Controller extends AppController
     public function update(UpdateGenreService $service, FormRequest $formRequest, string $genre): JsonResponse
     {
         $genre = $service->execute(
-            GenreDTO::factory($formRequest->all()),
-            $genre
+            genreDTO: GenreDTO::factory($formRequest->all()),
+            genreId: $genre,
         );
 
         return response()->json($genre, Response::HTTP_OK);

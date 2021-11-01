@@ -40,7 +40,10 @@ class Controller extends AppController
      */
     public function update(UpdateCastMemberService $service, FormRequest $formRequest, string $castMember): JsonResponse
     {
-        $castMember = $service->execute(CastMemberDTO::factory($formRequest->all()), $castMember);
+        $castMember = $service->execute(
+            castMemberDTO: CastMemberDTO::factory($formRequest->all()),
+            castMemberId: $castMember
+        );
 
         return response()->json($castMember, Response::HTTP_OK);
     }

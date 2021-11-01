@@ -34,7 +34,10 @@ class Controller extends AppController
 
     public function update(UpdateVideoService $service, FormRequest $formRequest, string $video): JsonResponse
     {
-        $videoSalved = $service->execute(VideoDTO::factory($formRequest->all()), $video);
+        $videoSalved = $service->execute(
+            videoDTO: VideoDTO::factory($formRequest->all()),
+            videoId: $video,
+        );
 
         return response()->json($videoSalved);
     }
