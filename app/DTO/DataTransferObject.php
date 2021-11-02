@@ -8,12 +8,14 @@ use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
 class DataTransferObject extends DataTransferObjectAbstract
 {
+    private const REGEX_CAMEL_TO_CASE = '/(?<!^)[A-Z]/';
+    private const REPLACE_CAMEL_TO_CASE = '_$0';
     protected bool $ignoreMissing = true;
 
     /**
+     * @param array<string, mixed> $parameters
      * @throws UnknownProperties
      *
-     * @param array<string, mixed> $parameters
      */
     public function __construct(array $parameters = [])
     {
@@ -47,8 +49,12 @@ class DataTransferObject extends DataTransferObjectAbstract
 
     private function camelToSnakeCase(string $input): string
     {
-        return strtolower(
-            preg_replace('/(?<!^)[A-Z]/', '_$0', $input) ?? ''
-        );
+        $inputFiltered = preg_replace(
+                pattern: self::REGEX_CAMEL_TO_CASE,
+                replacement: self::REPLACE_CAMEL_TO_CASE,
+                subject: $input,
+            ) ?? '';
+
+        return strtolower(string: $inputFiltered);
     }
 }
