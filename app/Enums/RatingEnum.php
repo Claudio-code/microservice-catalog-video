@@ -11,14 +11,14 @@ class RatingEnum
     public const SIXTEEN_YEARS = '16';
     public const EIGHTEEN_YEARS = '18';
 
-    public static function formatter(int $positionRating): string
+    public static function formatter(int | string $positionRating): string
     {
         return match ($positionRating) {
-            1 => self::TEEN_YEARS,
-            2 => self::TWELVE_YEARS,
-            3 => self::FOURTEEN_YEARS,
-            4 => self::SIXTEEN_YEARS,
-            5 => self::EIGHTEEN_YEARS,
+            1, '1' => self::TEEN_YEARS,
+            2, '2' => self::TWELVE_YEARS,
+            3, '3' => self::FOURTEEN_YEARS,
+            4, '4' => self::SIXTEEN_YEARS,
+            5, '5' => self::EIGHTEEN_YEARS,
             default => self::FREE,
         };
     }
