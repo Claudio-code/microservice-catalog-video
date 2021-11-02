@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             CastMemberSeeder::class,
             GenreSeeder::class,
+            VideoSeeder::class,
         ]);
     }
 }

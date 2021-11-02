@@ -13,7 +13,7 @@ class CreateVideoTable extends Migration
      */
     public function up()
     {
-        Schema::create('video', function (Blueprint $table) {
+        Schema::create('videos', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title');
             $table->text('description');
