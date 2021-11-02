@@ -2,6 +2,7 @@
 
 namespace App\DTO;
 
+use App\Enums\RatingEnum;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
 class VideoDTO extends DataTransferObject
@@ -9,7 +10,7 @@ class VideoDTO extends DataTransferObject
     public string $title;
     public string $description;
     public bool $opened;
-    public int $rating;
+    public string $rating;
     public int $duration;
     public int $year_launched;
 
@@ -20,6 +21,7 @@ class VideoDTO extends DataTransferObject
      */
     public static function factory(array $data): self
     {
+        $data['rating'] = RatingEnum::formatter($data['rating'] ?? 0);
         return new self($data);
     }
 }
