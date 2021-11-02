@@ -10,7 +10,7 @@ trait TestValidations
     protected function assertInvalidationJson(
         TestResponse $response,
         array $jsonValidationsErrorsFields,
-        array $jsonFragmentValitations,
+        array $jsonFragmentValidations,
         array $jsonMissingValidationErrorsFields = [],
     ): void {
         $response
@@ -18,8 +18,8 @@ trait TestValidations
             ->assertJsonValidationErrors($jsonValidationsErrorsFields)
             ->assertJsonMissingValidationErrors($jsonMissingValidationErrorsFields);
 
-        foreach ($jsonFragmentValitations as $valitation) {
-            $response->assertJsonFragment([$valitation]);
+        foreach ($jsonFragmentValidations as $validation) {
+            $response->assertJsonFragment([$validation]);
         }
     }
 
