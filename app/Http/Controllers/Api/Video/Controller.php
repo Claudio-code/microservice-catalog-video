@@ -28,7 +28,7 @@ class Controller extends AppController
     {
         $video = $service->execute(VideoDTO::factory($formRequest->all()));
 
-        return response()->json($video);
+        return response()->json($video, Response::HTTP_CREATED);
     }
 
     public function update(UpdateVideoService $service, FormRequest $formRequest, string $video): JsonResponse
