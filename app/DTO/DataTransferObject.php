@@ -17,12 +17,11 @@ class DataTransferObject extends DataTransferObjectAbstract
      */
     public function __construct(array $parameters = [])
     {
-        foreach ($parameters as $key => $value) {
-            unset($parameters[$key]);
-            $parameters[$key] = $value;
-        }
-
-        parent::__construct($parameters);
+        parent::__construct(array_filter(
+            array: $parameters,
+            callback: fn (mixed $value) => !empty($value),
+            mode: ARRAY_FILTER_USE_KEY,
+        ));
     }
 
     /**
@@ -33,13 +32,14 @@ class DataTransferObject extends DataTransferObjectAbstract
     protected function parseArray(array $array): array
     {
         $newArray = [];
-
         foreach (parent::parseArray($array) as $key => $value) {
-            if ($value instanceof DateTime) {
-                $value = $value->format('Y-m-d H:i:s.u');
-            }
+            $keyFormatted = $this->camelToSnakeCase((string) $key);
+            $valueFormatted = match ($value instanceof DateTime) {
+                true => $value->format('Y-m-d H:i:s.u'),
+                default => $value,
+            };
 
-            $newArray[$this->camelToSnakeCase((string) $key)] = $value;
+            $newArray[$keyFormatted] = $valueFormatted;
         }
 
         return $newArray;
@@ -50,15 +50,5 @@ class DataTransferObject extends DataTransferObjectAbstract
         return strtolower(
             preg_replace('/(?<!^)[A-Z]/', '_$0', $input) ?? ''
         );
-    }
-
-    /**
-     * @param array<string, mixed> $data
-     *
-     * @throws UnknownProperties
-     */
-    public static function factory(array $data): self
-    {
-        return new self($data);
     }
 }
