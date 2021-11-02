@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Models;
+namespace Tests\Feature\Models;
 
 use App\Models\Category;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -34,10 +34,7 @@ class CategoryTest extends TestCase
         $category = Category::factory(['name' => 'casas12'])->create();
         $category->refresh();
 
-        // regex to validadate uuid v4
-        $regex = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
-
-        self::assertTrue((bool) preg_match($regex, $category->id));
+        self::assertTrue((bool) preg_match(self::REGEX_TO_TEST_UUID4, $category->id));
         self::assertEquals('casas12', $category->name);
         self::assertTrue($category->is_active);
     }
