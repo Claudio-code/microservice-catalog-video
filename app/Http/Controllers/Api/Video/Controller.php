@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Video;
 
 use App\DTO\VideoDTO;
-use App\Http\Controllers\Api\Category\FormRequest;
 use App\Http\Controllers\Controller as AppController;
 use App\Services\Video\CreateVideoService;
 use App\Services\Video\GetAllVideoService;
