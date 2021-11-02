@@ -13,13 +13,13 @@ class Video extends Model
     use SoftDeletes;
     use Uuid;
 
-    /** @var boolean  */
+    /** @var boolean */
     public $incrementing = false;
 
-    /** @var string[]  */
+    /** @var string[] */
     protected $dates = ['deleted_at'];
 
-    /** @var string[]  */
+    /** @var string[] */
     protected $fillable = [
         'title',
         'description',
@@ -29,7 +29,7 @@ class Video extends Model
         'duration',
     ];
 
-    /** @var string[]  */
+    /** @var string[] */
     protected $casts = [
         'id' => 'string',
         'opened' => 'boolean',
