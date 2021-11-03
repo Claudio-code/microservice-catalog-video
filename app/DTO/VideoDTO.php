@@ -14,6 +14,12 @@ class VideoDTO extends DataTransferObject
     public int $duration;
     public int $year_launched;
 
+    /** @var array<string> */
+    public array $categories_ids = [];
+
+    /** @var array<string> */
+    public array $genres_ids = [];
+
     /**
      * @param array<string, mixed> $data
      *

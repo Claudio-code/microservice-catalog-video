@@ -23,6 +23,7 @@ class Repository
         /** @var Model */
         $model = $this->model::create($dataTransferObject->toArray());
         $model->refresh();
+        $this->setModel($model);
 
         return $model;
     }

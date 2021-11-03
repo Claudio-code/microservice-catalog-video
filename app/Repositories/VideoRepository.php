@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Repositories;
+
+use App\DTO\DataTransferObject;
+use App\Models\Video;
+use Illuminate\Database\Eloquent\Model;
+
+class VideoRepository extends Repository
+{
+    public function create(DataTransferObject $dataTransferObject): Model
+    {
+        parent::create($dataTransferObject);
+
+        return match (true) {
+            !empty($dataTransferObject->categories_ids) => $this->syncCategories($dataTransferObject->categories_ids),
+            !empty($dataTransferObject->genres_ids) => $this->syncGenres($dataTransferObject->genres_ids),
+            default => $this->model,
+        };
+    }
+
+    public function update(DataTransferObject $dataTransferObject): Model
+    {
+        parent::update($dataTransferObject);
+
+        return match (true) {
+            !empty($dataTransferObject->categories_ids) => $this->syncCategories($dataTransferObject->categories_ids),
+            !empty($dataTransferObject->genres_ids) => $this->syncGenres($dataTransferObject->genres_ids),
+            default => $this->model,
+        };
+    }
+
+    /** @param array<string> $categoriesIds */
+    private function syncCategories(array $categoriesIds): Video
+    {
+        $this->model->categories()->sync($categoriesIds);
+        $this->model->refresh();
+
+        return $this->model;
+    }
+
+    /** @param array<string> $genresIds */
+    private function syncGenres(array $genresIds): Video
+    {
+        $this->model->genres()->sync($genresIds);
+        $this->model->refresh();
+
+        return $this->model;
+    }
+}

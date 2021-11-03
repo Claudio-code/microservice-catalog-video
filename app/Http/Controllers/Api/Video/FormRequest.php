@@ -18,7 +18,8 @@ class FormRequest extends IlluminateFormRequest
         'opened' => "string",
         'rating' => "string",
         'duration' => "string",
-        'year_launched' => "string"
+        'year_launched' => "string",
+        'categories_ids' => "string"
     ])]
     public function rules(): array
     {
@@ -29,6 +30,7 @@ class FormRequest extends IlluminateFormRequest
             'rating' => 'numeric',
             'duration' => 'numeric',
             'year_launched' => 'numeric',
+            'categories_ids' => 'array|exists:categories,id',
         ];
     }
 }
