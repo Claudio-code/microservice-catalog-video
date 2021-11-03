@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\DTO\DataTransferObject;
-use App\Models\Video;
 use Illuminate\Database\Eloquent\Model;
 
 class VideoRepository extends Repository
@@ -31,7 +30,7 @@ class VideoRepository extends Repository
     }
 
     /** @param array<string> $categoriesIds */
-    private function syncCategories(array $categoriesIds): Video
+    private function syncCategories(array $categoriesIds): Model
     {
         $this->model->categories()->sync($categoriesIds);
         $this->model->refresh();
@@ -40,7 +39,7 @@ class VideoRepository extends Repository
     }
 
     /** @param array<string> $genresIds */
-    private function syncGenres(array $genresIds): Video
+    private function syncGenres(array $genresIds): Model
     {
         $this->model->genres()->sync($genresIds);
         $this->model->refresh();
