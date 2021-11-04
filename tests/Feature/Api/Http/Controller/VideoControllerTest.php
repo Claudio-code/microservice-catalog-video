@@ -79,6 +79,87 @@ class VideoControllerTest extends TestCase
         );
     }
 
+    public function testInvalidFieldsInPost(): void
+    {
+
+        // categories_ids
+        $data = ['categories_ids' => 'w'];
+        $this->assertInvalidationInStoreAction(
+            data: $data,
+            method: 'POST',
+            route: 'video.store',
+            rule: 'array'
+        );
+        $data = ['categories_ids' => [12]];
+        $this->assertInvalidationInStoreAction(
+            data: $data,
+            method: 'POST',
+            route: 'video.store',
+            rule: 'exists'
+        );
+
+        // genres_ids
+        $data = ['genres_ids' => 'w'];
+        $this->assertInvalidationInStoreAction(
+            data: $data,
+            method: 'POST',
+            route: 'video.store',
+            rule: 'array'
+        );
+        $data = ['genres_ids' => [12]];
+        $this->assertInvalidationInStoreAction(
+            data: $data,
+            method: 'POST',
+            route: 'video.store',
+            rule: 'exists'
+        );
+
+        // title
+        $data = ['title' => 21];
+        $this->assertInvalidationInStoreAction(
+            data: $data,
+            method: 'POST',
+            route: 'video.store',
+            rule: 'string'
+        );
+
+        // description
+        $data = ['description' => 21];
+        $this->assertInvalidationInStoreAction(
+            data: $data,
+            method: 'POST',
+            route: 'video.store',
+            rule: 'string'
+        );
+
+        // opened
+        $data = ['opened' => 21];
+        $this->assertInvalidationInStoreAction(
+            data: $data,
+            method: 'POST',
+            route: 'video.store',
+            rule: 'boolean'
+        );
+
+        // rating
+        $data = ['rating' => 'wdq'];
+        $this->assertInvalidationInStoreAction(
+            data: $data,
+            method: 'POST',
+            route: 'video.store',
+            rule: 'numeric'
+        );
+
+        // year_launched
+        $data = ['year_launched' => 'wdq'];
+        $this->assertInvalidationInStoreAction(
+            data: $data,
+            method: 'POST',
+            route: 'video.store',
+            rule: 'numeric'
+        );
+    }
+
     public function testCreate(): void
     {
         $title = str_repeat(string: 'w', times: 12);
