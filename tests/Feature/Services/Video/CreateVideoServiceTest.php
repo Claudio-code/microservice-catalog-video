@@ -82,6 +82,33 @@ class CreateVideoServiceTest extends TestCase
         $this->service->execute($dto);
     }
 
+    public function testRollbackInVideoCreateIfGenreIdAndCategoryIdIsValid(): void
+    {
+        $this->factoryValidGenre();
+        $this->factoryValidCategory();
+
+        $dto = VideoDTO::factory($this->data);
+        $this->service->execute($dto);
+
+        /** @var Video $newVideo */
+        $newVideo = $this->repository->all()->get(0);
+        $categoriesIds = $newVideo->categories()->allRelatedIds();
+        /** @var Category $category */
+        $category = $newVideo->categories()->first();
+        $genresIds = $newVideo->genres()->allRelatedIds();
+        /** @var Genre $genre */
+        $genre = $newVideo->genres()->first();
+
+        self::assertEquals($category::class, Category::class);
+        self::assertEquals($this->data['categories_ids'][0], $category->id);
+        self::assertEquals($this->data['categories_ids'], $categoriesIds->toArray());
+
+        self::assertEquals($genre::class, Genre::class);
+        self::assertEquals($this->data['genres_ids'][0], $genre->id);
+        self::assertEquals($this->data['genres_ids'], $genresIds->toArray());
+    }
+
+
     private function factoryValidCategory(): void
     {
         $category = Category::factory()->create();
