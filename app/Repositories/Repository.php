@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\DTO\DataTransferObject;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Repository
 {
@@ -29,22 +28,12 @@ class Repository
         return $model;
     }
 
-    public function createTransaction(DataTransferObject $dataTransferObject): void
-    {
-        DB::transaction(fn () => $this->create($dataTransferObject));
-    }
-
     public function update(DataTransferObject $dataTransferObject): Model
     {
         $this->model->update($dataTransferObject->toArray());
         $this->model->refresh();
 
         return $this->model;
-    }
-
-    public function updateTransaction(DataTransferObject $dataTransferObject): void
-    {
-        DB::transaction(fn () => $this->update($dataTransferObject));
     }
 
     public function delete(?string $id = null): void
