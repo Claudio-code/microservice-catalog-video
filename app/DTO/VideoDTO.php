@@ -27,7 +27,9 @@ class VideoDTO extends DataTransferObject
      */
     public static function factory(array $data): self
     {
-        $data['rating'] = RatingEnum::formatter($data['rating'] ?? 0);
+        /** @var int | string $rating */
+        $rating = $data['rating'] ?? 0;
+        $data['rating'] = RatingEnum::formatter(positionRating: $rating);
         return new self($data);
     }
 }
