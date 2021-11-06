@@ -10,18 +10,17 @@ class VideoRepository extends Repository
     public function create(DataTransferObject $dataTransferObject): Model
     {
         parent::create($dataTransferObject);
-
-        return match (true) {
-            !empty($dataTransferObject->categories_ids) => $this->syncCategories($dataTransferObject->categories_ids),
-            !empty($dataTransferObject->genres_ids) => $this->syncGenres($dataTransferObject->genres_ids),
-            default => $this->model,
-        };
+        return $this->matchRelationship($dataTransferObject);
     }
 
     public function update(DataTransferObject $dataTransferObject): Model
     {
         parent::update($dataTransferObject);
+        return $this->matchRelationship($dataTransferObject);
+    }
 
+    private function matchRelationship(DataTransferObject $dataTransferObject): Model
+    {
         return match (true) {
             !empty($dataTransferObject->categories_ids) => $this->syncCategories($dataTransferObject->categories_ids),
             !empty($dataTransferObject->genres_ids) => $this->syncGenres($dataTransferObject->genres_ids),
