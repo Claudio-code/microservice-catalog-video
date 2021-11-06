@@ -9,13 +9,13 @@ class VideoRepository extends Repository
 {
     public function create(DataTransferObject $dataTransferObject): Model
     {
-        parent::create($dataTransferObject);
+        parent::createTransaction($dataTransferObject);
         return $this->matchRelationship($dataTransferObject);
     }
 
     public function update(DataTransferObject $dataTransferObject): Model
     {
-        parent::update($dataTransferObject);
+        parent::updateTransaction($dataTransferObject);
         return $this->matchRelationship($dataTransferObject);
     }
 
