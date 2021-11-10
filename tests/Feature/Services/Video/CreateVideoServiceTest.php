@@ -11,17 +11,17 @@ use App\Services\Video\CreateVideoService;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use Tests\Traits\FactoriesToCreateEntities;
 use Tests\Traits\TestValidations;
 
 class CreateVideoServiceTest extends TestCase
 {
     use DatabaseMigrations;
     use TestValidations;
+    use FactoriesToCreateEntities;
 
     private CreateVideoService $service;
     private VideoRepository $repository;
-    /** @var array<string, mixed> */
-    private array $data;
 
     protected function setUp(): void
     {
@@ -82,7 +82,7 @@ class CreateVideoServiceTest extends TestCase
         $this->service->execute($dto);
     }
 
-    public function testRollbackInVideoCreateIfGenreIdAndCategoryIdIsValid(): void
+    public function testVideoCreateIfGenreIdAndCategoryIdIsValid(): void
     {
         $this->factoryValidGenre();
         $this->factoryValidCategory();
@@ -106,18 +106,5 @@ class CreateVideoServiceTest extends TestCase
         self::assertEquals($genre::class, Genre::class);
         self::assertEquals($this->data['genres_ids'][0], $genre->id);
         self::assertEquals($this->data['genres_ids'], $genresIds->toArray());
-    }
-
-
-    private function factoryValidCategory(): void
-    {
-        $category = Category::factory()->create();
-        $this->data['categories_ids'] = [$category->id];
-    }
-
-    private function factoryValidGenre(): void
-    {
-        $genre = Genre::factory()->create();
-        $this->data['genres_ids'] = [$genre->id];
     }
 }

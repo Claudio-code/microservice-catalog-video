@@ -3,14 +3,14 @@
 namespace App\Repositories;
 
 use App\DTO\DataTransferObject;
-use App\DTO\VideoDTO;
-use App\Models\Video;
+use App\DTO\GenreDTO;
+use App\Models\Genre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class VideoRepository extends Repository
+class GenreRepository extends Repository
 {
-    public function create(VideoDTO | DataTransferObject $dataTransferObject): Model
+    public function create(DataTransferObject $dataTransferObject): Model
     {
         DB::transaction(function () use ($dataTransferObject) {
             parent::create($dataTransferObject);
@@ -20,7 +20,7 @@ class VideoRepository extends Repository
         return $this->model;
     }
 
-    public function update(VideoDTO | DataTransferObject $dataTransferObject): Model
+    public function update(DataTransferObject $dataTransferObject): Model
     {
         DB::transaction(function () use ($dataTransferObject) {
             parent::update($dataTransferObject);
@@ -30,20 +30,20 @@ class VideoRepository extends Repository
         return $this->model;
     }
 
-    private function matchRelationship(VideoDTO | DataTransferObject $dataTransferObject): void
+    private function matchRelationship(GenreDTO | DataTransferObject $dataTransferObject): void
     {
-        if (!($dataTransferObject instanceof VideoDTO)) {
+        if (!($dataTransferObject instanceof GenreDTO)) {
             return;
         }
 
         $this->syncCategories($dataTransferObject->categories_ids);
-        $this->syncGenres($dataTransferObject->genres_ids);
+        $this->syncVideos($dataTransferObject->categories_ids);
     }
 
     /** @param array<string> $categoriesIds */
     private function syncCategories(array $categoriesIds): void
     {
-        if (!($this->model instanceof Video)) {
+        if (!($this->model instanceof Genre)) {
             return;
         }
 
@@ -51,14 +51,14 @@ class VideoRepository extends Repository
         $this->model->refresh();
     }
 
-    /** @param array<string> $genresIds */
-    private function syncGenres(array $genresIds): void
+    /** @param array<string> $videosIds */
+    private function syncVideos(array $videosIds): void
     {
-        if (!($this->model instanceof Video)) {
+        if (!($this->model instanceof Genre)) {
             return;
         }
 
-        $this->model->genres()->sync($genresIds);
+        $this->model->videos()->sync($videosIds);
         $this->model->refresh();
     }
 }

@@ -10,6 +10,12 @@ class CategoryDTO extends DataTransferObject
     public string $description;
     public bool $is_active;
 
+    /** @var array<string> */
+    public array $genres_ids = [];
+
+    /** @var array<string> */
+    public array $videos_ids = [];
+
     /**
      * @param array<string, mixed> $data
      *

@@ -31,8 +31,8 @@ class FormRequest extends IlluminateFormRequest
             'rating' => 'numeric',
             'duration' => 'numeric',
             'year_launched' => 'numeric',
-            'categories_ids' => 'array|exists:categories,id',
-            'genres_ids' => 'array|exists:genres,id',
+            'categories_ids' => 'array|exists:categories,id,deleted_at,NULL',
+            'genres_ids' => 'array|exists:genres,id,deleted_at,NULL',
         ];
     }
 }
