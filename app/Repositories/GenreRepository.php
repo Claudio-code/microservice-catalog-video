@@ -37,7 +37,7 @@ class GenreRepository extends Repository
         }
 
         $this->syncCategories($dataTransferObject->categories_ids);
-        $this->syncVideos($dataTransferObject->categories_ids);
+        $this->syncVideos($dataTransferObject->videos_ids);
     }
 
     /** @param array<string> $categoriesIds */
