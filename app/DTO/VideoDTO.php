@@ -29,7 +29,9 @@ class VideoDTO extends DataTransferObject
     {
         /** @var int | string $rating */
         $rating = $data['rating'] ?? 0;
-        $data['rating'] = RatingEnum::formatter(positionRating: $rating);
+        $ratingType = RatingEnum::formatter(positionRating: $rating);
+
+        $data['rating'] = $ratingType->value;
         return new self($data);
     }
 }

@@ -1,4 +1,4 @@
-FROM php:8.0.2-fpm-alpine3.13
+FROM php:8.1-fpm-alpine3.15
 
 RUN apk add --no-cache shadow openssl bash mysql-client nodejs npm git librdkafka-dev
 
@@ -11,11 +11,10 @@ RUN apk add --no-cache $PHPIZE_DEPS && docker-php-ext-install pdo pdo_mysql
 RUN pecl install -o -f redis \
     &&  rm -rf /tmp/pear \
     &&  docker-php-ext-enable redis \
-    && pecl install -o -f rdkafka \
+    && pecl install rdkafka \
     && docker-php-ext-enable rdkafka \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug
-
 
 RUN touch /home/www-data/.bashrc | echo "PS1='\w\$ '" >> /home/www-data/.bashrc
 
