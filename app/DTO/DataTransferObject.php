@@ -33,18 +33,22 @@ class DataTransferObject extends DataTransferObjectAbstract
      */
     protected function parseArray(array $array): array
     {
-        $newArray = [];
-        foreach (parent::parseArray($array) as $key => $value) {
+        $formattedArray = [];
+        $parsedArray = parent::parseArray($array);
+        foreach ($parsedArray as $key => $value) {
             $keyFormatted = $this->camelToSnakeCase((string) $key);
-            $valueFormatted = match ($value instanceof DateTime) {
-                true => $value->format('Y-m-d H:i:s.u'),
-                default => $value,
-            };
-
-            $newArray[$keyFormatted] = $valueFormatted;
+            $formattedArray[$keyFormatted] = $this->formatDateTimeValues($value);
         }
 
-        return $newArray;
+        return $formattedArray;
+    }
+
+    private function formatDateTimeValues(mixed $value): mixed
+    {
+        return match ($value instanceof DateTime) {
+            true => $value->format('Y-m-d H:i:s.u'),
+            default => $value,
+        };
     }
 
     private function camelToSnakeCase(string $input): string
