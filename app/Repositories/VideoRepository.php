@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\DB;
 
 class VideoRepository extends Repository
 {
+    /**
+     * @throws \Exception
+     */
     public function create(VideoDTO | DataTransferObject $dataTransferObject): Model
     {
-        DB::transaction(function () use ($dataTransferObject) {
-            parent::create($dataTransferObject);
-            $this->matchRelationship($dataTransferObject);
-        });
+        if ($this->model instanceof Video && $dataTransferObject instanceof VideoDTO) {
+            $this->model->create($dataTransferObject);
+        }
 
         return $this->model;
     }
