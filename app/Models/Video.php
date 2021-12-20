@@ -50,11 +50,13 @@ class Video extends Model
         return $this->belongsToMany(related: Genre::class);
     }
 
-    public function create(VideoDTO $videoDTO): ?self
+    public function createVideo(VideoDTO $videoDTO): ?self
     {
         try {
             DB::beginTransaction();
             $object = static::create($videoDTO->toArray());
+            static::matchRelationship($object, $videoDTO);
+            $object->refresh();
             DB::commit();
 
             return $object;
@@ -72,7 +74,9 @@ class Video extends Model
             if ($updated) {
                 // update file
             }
+            static::matchRelationship($this, $videoDTO);
             DB::commit();
+
             return $updated;
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -81,21 +85,21 @@ class Video extends Model
     }
 
 
-    private function matchRelationship(VideoDTO $videoDTO): void
+    protected static function matchRelationship(Video $video, VideoDTO $videoDTO): void
     {
-        $this->syncCategories($dataTransferObject->categories_ids);
-        $this->syncGenres($dataTransferObject->genres_ids);
+        $video->syncCategories($videoDTO->categories_ids);
+        $video->syncGenres($videoDTO->genres_ids);
     }
 
     /** @param array<string> $categoriesIds */
-    private function syncCategories(array $categoriesIds): void
+    public function syncCategories(array $categoriesIds): void
     {
         $this->categories()->sync($categoriesIds);
         $this->refresh();
     }
 
     /** @param array<string> $genresIds */
-    private function syncGenres(array $genresIds): void
+    public function syncGenres(array $genresIds): void
     {
         $this->genres()->sync($genresIds);
         $this->refresh();
