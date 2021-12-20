@@ -8,13 +8,9 @@ ENV PHPIZE_DEPS autoconf file g++ gcc libc-dev make pkgconf re2c libxml2 libxml2
 
 RUN apk add --no-cache $PHPIZE_DEPS && docker-php-ext-install pdo pdo_mysql
 
-RUN pecl install -o -f redis \
-    &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis \
-    && pecl install rdkafka \
-    && docker-php-ext-enable rdkafka \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug
+RUN pecl install -o -f redis &&  rm -rf /tmp/pear && docker-php-ext-enable redis \
+    && pecl install rdkafka && docker-php-ext-enable rdkafka \
+    && pecl install xdebug && docker-php-ext-enable xdebug
 
 RUN touch /home/www-data/.bashrc | echo "PS1='\w\$ '" >> /home/www-data/.bashrc
 
