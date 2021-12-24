@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\DTO\VideoDTO;
 use App\Models\Traits\Uuid;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -50,6 +51,7 @@ class Video extends Model
         return $this->belongsToMany(related: Genre::class);
     }
 
+    /** @throws Exception */
     public function createVideo(VideoDTO $videoDTO): ?self
     {
         try {
@@ -60,12 +62,13 @@ class Video extends Model
             DB::commit();
 
             return $object;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
         }
     }
 
+    /** @throws Exception */
     public function updateVideo(VideoDTO $videoDTO): bool
     {
         try {
@@ -78,12 +81,11 @@ class Video extends Model
             DB::commit();
 
             return $updated;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
         }
     }
-
 
     protected static function matchRelationship(Video $video, VideoDTO $videoDTO): void
     {
@@ -91,14 +93,14 @@ class Video extends Model
         $video->syncGenres($videoDTO->genres_ids);
     }
 
-    /** @param array<string> $categoriesIds */
+    /** @param string[] $categoriesIds */
     public function syncCategories(array $categoriesIds): void
     {
         $this->categories()->sync($categoriesIds);
         $this->refresh();
     }
 
-    /** @param array<string> $genresIds */
+    /** @param string[] $genresIds */
     public function syncGenres(array $genresIds): void
     {
         $this->genres()->sync($genresIds);

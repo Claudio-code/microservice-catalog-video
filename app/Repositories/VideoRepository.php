@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class VideoRepository extends Repository
 {
-    /**
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function create(VideoDTO | DataTransferObject $dataTransferObject): Model
     {
         if ($this->model instanceof Video && $dataTransferObject instanceof VideoDTO) {
