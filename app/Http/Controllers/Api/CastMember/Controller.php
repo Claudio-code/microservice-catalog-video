@@ -22,11 +22,11 @@ class Controller extends AbstractController
         RemoveCastMemberService $deleteService,
     ) {
         parent::__construct(
-            indexService:        $indexService,
-            showService:         $showService,
-            createService:       $createService,
-            updateService:       $updateService,
-            deleteService:       $deleteService,
+            indexService:   $indexService,
+            showService:    $showService,
+            createService:  $createService,
+            updateService:  $updateService,
+            deleteService:  $deleteService,
         );
     }
 

@@ -15,18 +15,18 @@ use JetBrains\PhpStorm\ArrayShape;
 class Controller extends AbstractController
 {
     public function __construct(
-        GetAllVideoService $indexService,
-        GetOneVideoService   $showService,
-        CreateVideoService   $createService,
-        UpdateVideoService   $updateService,
-        RemoveVideoService   $deleteService,
+        GetAllVideoService  $indexService,
+        GetOneVideoService  $showService,
+        CreateVideoService  $createService,
+        UpdateVideoService  $updateService,
+        RemoveVideoService  $deleteService,
     ) {
         parent::__construct(
-            indexService:        $indexService,
-            showService:         $showService,
-            createService:       $createService,
-            updateService:       $updateService,
-            deleteService:       $deleteService,
+            indexService:   $indexService,
+            showService:    $showService,
+            createService:  $createService,
+            updateService:  $updateService,
+            deleteService:  $deleteService,
         );
     }
 
