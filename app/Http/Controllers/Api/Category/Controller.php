@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Category;
 
-use App\DTO\CategoryDTO;
+use App\Factories\CategoryDTOFactoryInterface;
 use App\Http\Controllers\Controller as AppController;
 use App\Services\Category\CreateCategoryService;
 use App\Services\Category\GetAllCategoriesService;
@@ -25,7 +25,7 @@ class Controller extends AppController
      */
     public function store(CreateCategoryService $service, FormRequest $formRequest): JsonResponse
     {
-        $category = $service->execute(CategoryDTO::factory($formRequest->all()));
+        $category = $service->execute(CategoryDTOFactoryInterface::make($formRequest->all()));
 
         return response()->json($category, Response::HTTP_CREATED);
     }
@@ -41,7 +41,7 @@ class Controller extends AppController
     public function update(UpdateCategoryService $service, FormRequest $formRequest, string $category): JsonResponse
     {
         $category = $service->execute(
-            categoryDTO: CategoryDTO::factory($formRequest->all()),
+            categoryDTO: CategoryDTOFactoryInterface::make($formRequest->all()),
             categoryId: $category,
         );
 

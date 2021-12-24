@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\CastMember;
 
-use App\DTO\CastMemberDTO;
+use App\Factories\CastMemberDTOFactoryInterface;
 use App\Http\Controllers\Controller as AppController;
 use App\Services\CastMember\CreateCastMemberService;
 use App\Services\CastMember\GetAllCastMemberService;
@@ -25,7 +25,7 @@ class Controller extends AppController
      */
     public function store(CreateCastMemberService $service, FormRequest $formRequest): JsonResponse
     {
-        $castMember = $service->execute(CastMemberDTO::factory($formRequest->all()));
+        $castMember = $service->execute(CastMemberDTOFactoryInterface::make($formRequest->all()));
 
         return response()->json($castMember, Response::HTTP_CREATED);
     }
@@ -41,7 +41,7 @@ class Controller extends AppController
     public function update(UpdateCastMemberService $service, FormRequest $formRequest, string $castMember): JsonResponse
     {
         $castMember = $service->execute(
-            castMemberDTO: CastMemberDTO::factory($formRequest->all()),
+            castMemberDTO: CastMemberDTOFactoryInterface::make($formRequest->all()),
             castMemberId: $castMember
         );
 
