@@ -11,9 +11,11 @@ use App\Services\Category\GetOneCategoryService;
 use App\Services\Category\RemoveCategoryService;
 use App\Services\Category\UpdateCategoryService;
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 class Controller extends AbstractController
 {
+    #[Pure]
     public function __construct(
         GetAllCategoriesService $indexService,
         GetOneCategoryService   $showService,

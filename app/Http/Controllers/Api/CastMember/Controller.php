@@ -11,9 +11,11 @@ use App\Services\CastMember\GetOneCastMemberService;
 use App\Services\CastMember\RemoveCastMemberService;
 use App\Services\CastMember\UpdateCastMemberService;
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 class Controller extends AbstractController
 {
+    #[Pure]
     public function __construct(
         GetAllCastMemberService $indexService,
         GetOneCastMemberService $showService,

@@ -11,9 +11,11 @@ use App\Services\Genre\GetOneGenreService;
 use App\Services\Genre\RemoveGenreService;
 use App\Services\Genre\UpdateGenreService;
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 class Controller extends AbstractController
 {
+    #[Pure]
     public function __construct(
         GetAllGenreService   $indexService,
         GetOneGenreService   $showService,

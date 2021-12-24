@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Video;
 
-use App\DTO\DataTransferObject;
+use App\DTO\VideoDTO;
 use App\Factories\VideoDTOFactory;
 use App\Http\Controllers\AbstractController;
 use App\Services\Video\CreateVideoService;
@@ -11,9 +11,11 @@ use App\Services\Video\GetOneVideoService;
 use App\Services\Video\RemoveVideoService;
 use App\Services\Video\UpdateVideoService;
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 class Controller extends AbstractController
 {
+    #[Pure]
     public function __construct(
         GetAllVideoService  $indexService,
         GetOneVideoService  $showService,
@@ -54,7 +56,7 @@ class Controller extends AbstractController
         ];
     }
 
-    public function factoryDTO(array $data): DataTransferObject
+    public function factoryDTO(array $data): VideoDTO
     {
         return VideoDTOFactory::make($data);
     }
