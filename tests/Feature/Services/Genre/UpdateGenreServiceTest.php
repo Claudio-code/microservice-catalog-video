@@ -60,7 +60,7 @@ class UpdateGenreServiceTest extends TestCase
         $this->factoryValidVideo();
 
         try {
-            $dto = GenreDTO::factory($this->data);
+            $dto = GenreDTOFactory::make($this->data);
             $this->service->execute($dto, $this->genre->id);
         } catch (QueryException) {
             /** @var Genre $newGenre */
@@ -75,7 +75,7 @@ class UpdateGenreServiceTest extends TestCase
         $this->factoryValidCategory();
 
         $this->expectException(QueryException::class);
-        $dto = GenreDTO::factory($this->data);
+        $dto = GenreDTOFactory::make($this->data);
         $this->service->execute($dto, $this->genre->id);
     }
 
@@ -84,7 +84,7 @@ class UpdateGenreServiceTest extends TestCase
         $this->factoryValidVideo();
 
         $this->expectException(QueryException::class);
-        $dto = GenreDTO::factory($this->data);
+        $dto = GenreDTOFactory::make($this->data);
         $this->service->execute($dto, $this->genre->id);
     }
 
@@ -93,7 +93,7 @@ class UpdateGenreServiceTest extends TestCase
         $this->factoryValidVideo();
         $this->factoryValidCategory();
 
-        $dto = GenreDTO::factory($this->data);
+        $dto = GenreDTOFactory::make($this->data);
         $this->service->execute($dto, $this->genre->id);
 
         /** @var Genre $newGenre */
