@@ -5,7 +5,7 @@ namespace App\Factories;
 use App\DTO\VideoDTO;
 use App\Enums\RatingEnum;
 
-class VideoDTOFactory implements DTOFactoryInterface
+class VideoDTOFactory
 {
     public static function make(array $data): VideoDTO
     {

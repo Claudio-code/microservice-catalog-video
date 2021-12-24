@@ -4,7 +4,7 @@ namespace App\Factories;
 
 use App\DTO\GenreDTO;
 
-class GenreDTOFactory implements DTOFactoryInterface
+class GenreDTOFactory
 {
     public static function make(array $data): GenreDTO
     {

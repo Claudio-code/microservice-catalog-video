@@ -4,7 +4,7 @@ namespace App\Factories;
 
 use App\DTO\CastMemberDTO;
 
-class CastMemberDTOFactory implements DTOFactoryInterface
+class CastMemberDTOFactory
 {
     public static function make(array $data): CastMemberDTO
     {

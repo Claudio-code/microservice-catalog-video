@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Services\Video;
 
-use App\DTO\VideoDTO;
+use App\Factories\VideoDTOFactory;
 use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Video;
@@ -45,7 +45,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidGenre();
 
         try {
-            $dto = VideoDTO::factory($this->data);
+            $dto = VideoDTOFactory::make($this->data);
             $this->service->execute($dto);
         } catch (QueryException) {
             self::assertEmpty($this->repository->all()->toArray());
@@ -57,7 +57,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidGenre();
 
         $this->expectException(QueryException::class);
-        $dto = VideoDTO::factory($this->data);
+        $dto = VideoDTOFactory::make($this->data);
         $this->service->execute($dto);
     }
 
@@ -66,7 +66,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidCategory();
 
         try {
-            $dto = VideoDTO::factory($this->data);
+            $dto = VideoDTOFactory::make($this->data);
             $this->service->execute($dto);
         } catch (QueryException) {
             self::assertEmpty($this->repository->all()->toArray());
@@ -78,7 +78,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidCategory();
 
         $this->expectException(QueryException::class);
-        $dto = VideoDTO::factory($this->data);
+        $dto = VideoDTOFactory::make($this->data);
         $this->service->execute($dto);
     }
 
@@ -87,7 +87,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidGenre();
         $this->factoryValidCategory();
 
-        $dto = VideoDTO::factory($this->data);
+        $dto = VideoDTOFactory::make($this->data);
         $this->service->execute($dto);
 
         /** @var Video $newVideo */

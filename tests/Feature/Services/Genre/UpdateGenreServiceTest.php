@@ -3,6 +3,7 @@
 namespace Tests\Feature\Services\Genre;
 
 use App\DTO\GenreDTO;
+use App\Factories\GenreDTOFactory;
 use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Video;
@@ -44,7 +45,7 @@ class UpdateGenreServiceTest extends TestCase
         $this->factoryValidCategory();
 
         try {
-            $dto = GenreDTO::factory($this->data);
+            $dto = GenreDTOFactory::make($this->data);
             $this->service->execute($dto, $this->genre->id);
         } catch (QueryException) {
             /** @var Genre $newGenre */

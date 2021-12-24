@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Services\Video;
 
-use App\DTO\VideoDTO;
+use App\Factories\VideoDTOFactory;
 use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Video;
@@ -47,7 +47,7 @@ class UpdateVideoServiceTest extends TestCase
         $this->factoryValidGenre();
 
         try {
-            $dto = VideoDTO::factory($this->data);
+            $dto = VideoDTOFactory::make($this->data);
             $this->service->execute($dto, $this->video->id);
         } catch (QueryException) {
             /** @var Video $newVideo */
@@ -62,7 +62,7 @@ class UpdateVideoServiceTest extends TestCase
         $this->factoryValidGenre();
 
         $this->expectException(QueryException::class);
-        $dto = VideoDTO::factory($this->data);
+        $dto = VideoDTOFactory::make($this->data);
         $this->service->execute($dto, $this->video->id);
     }
 
@@ -71,7 +71,7 @@ class UpdateVideoServiceTest extends TestCase
         $this->factoryValidCategory();
 
         try {
-            $dto = VideoDTO::factory($this->data);
+            $dto = VideoDTOFactory::make($this->data);
             $this->service->execute($dto, $this->video->id);
         } catch (QueryException) {
             /** @var Video $newVideo */
@@ -86,7 +86,7 @@ class UpdateVideoServiceTest extends TestCase
         $this->factoryValidCategory();
 
         $this->expectException(QueryException::class);
-        $dto = VideoDTO::factory($this->data);
+        $dto = VideoDTOFactory::make($this->data);
         $this->service->execute($dto, $this->video->id);
     }
 
@@ -95,7 +95,7 @@ class UpdateVideoServiceTest extends TestCase
         $this->factoryValidGenre();
         $this->factoryValidCategory();
 
-        $dto = VideoDTO::factory($this->data);
+        $dto = VideoDTOFactory::make($this->data);
         $this->service->execute($dto, $this->video->id);
 
         /** @var Video $newVideo */
