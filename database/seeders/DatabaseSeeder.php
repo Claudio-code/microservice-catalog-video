@@ -10,7 +10,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CategorySeeder::class,
+            CastMemberSeeder::class,
             GenreSeeder::class,
+            VideoSeeder::class,
         ]);
     }
 }

@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api\Genre;
 
 use App\DTO\GenreDTO;
 use App\Http\Controllers\Controller as AppController;
-use App\Services\CreateGenreService;
-use App\Services\GetAllGenreService;
-use App\Services\GetOneGenreService;
-use App\Services\RemoveGenreService;
-use App\Services\UpdateGenreService;
+use App\Services\Genre\CreateGenreService;
+use App\Services\Genre\GetAllGenreService;
+use App\Services\Genre\GetOneGenreService;
+use App\Services\Genre\RemoveGenreService;
+use App\Services\Genre\UpdateGenreService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -34,8 +34,8 @@ class Controller extends AppController
     public function update(UpdateGenreService $service, FormRequest $formRequest, string $genre): JsonResponse
     {
         $genre = $service->execute(
-            GenreDTO::factory($formRequest->all()),
-            $genre
+            genreDTO: GenreDTO::factory($formRequest->all()),
+            genreId: $genre,
         );
 
         return response()->json($genre, Response::HTTP_OK);

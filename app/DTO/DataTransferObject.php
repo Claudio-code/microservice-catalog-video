@@ -8,21 +8,22 @@ use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
 class DataTransferObject extends DataTransferObjectAbstract
 {
+    private const REGEX_CAMEL_TO_CASE = '/(?<!^)[A-Z]/';
+    private const REPLACE_CAMEL_TO_CASE = '_$0';
     protected bool $ignoreMissing = true;
 
     /**
+     * @param array<string, mixed> $parameters
      * @throws UnknownProperties
      *
-     * @param array<string, mixed> $parameters
      */
     public function __construct(array $parameters = [])
     {
-        foreach ($parameters as $key => $value) {
-            unset($parameters[$key]);
-            $parameters[$key] = $value;
-        }
-
-        parent::__construct($parameters);
+        parent::__construct(array_filter(
+            array: $parameters,
+            callback: fn (mixed $value) => !empty($value),
+            mode: ARRAY_FILTER_USE_KEY,
+        ));
     }
 
     /**
@@ -32,23 +33,32 @@ class DataTransferObject extends DataTransferObjectAbstract
      */
     protected function parseArray(array $array): array
     {
-        $newArray = [];
-
-        foreach (parent::parseArray($array) as $key => $value) {
-            if ($value instanceof DateTime) {
-                $value = $value->format('Y-m-d H:i:s.u');
-            }
-
-            $newArray[$this->camelToSnakeCase((string) $key)] = $value;
+        $formattedArray = [];
+        $parsedArray = parent::parseArray($array);
+        foreach ($parsedArray as $key => $value) {
+            $keyFormatted = $this->camelToSnakeCase((string) $key);
+            $formattedArray[$keyFormatted] = $this->formatDateTimeValues($value);
         }
 
-        return $newArray;
+        return $formattedArray;
+    }
+
+    private function formatDateTimeValues(mixed $value): mixed
+    {
+        return match ($value instanceof DateTime) {
+            true => $value->format('Y-m-d H:i:s.u'),
+            default => $value,
+        };
     }
 
     private function camelToSnakeCase(string $input): string
     {
-        return strtolower(
-            preg_replace('/(?<!^)[A-Z]/', '_$0', $input) ?? ''
-        );
+        $inputFiltered = preg_replace(
+                pattern: self::REGEX_CAMEL_TO_CASE,
+                replacement: self::REPLACE_CAMEL_TO_CASE,
+                subject: $input,
+            ) ?? '';
+
+        return strtolower(string: $inputFiltered);
     }
 }

@@ -7,6 +7,9 @@ migrate:
 run-all-tests:
 	docker exec -it micro-videos-app bash -c  "vendor/bin/phpunit"
 
+coverage:
+	docker exec -it micro-videos-app bash -c  "vendor/bin/phpunit --coverage-html storage/app/report"
+
 list-all-routes:
 	docker exec -it micro-videos-app bash -c  "php artisan route:list"
 
@@ -24,9 +27,6 @@ start:
 
 build:
 	docker-compose up -d --build
-	docker exec -it micro-videos-app bash -c  "php artisan migrate"
-	docker exec -it micro-videos-app bash -c  "php artisan db:seed"
-	docker exec -it micro-videos-app bash -c  "vendor/bin/phpunit"
 
 down:
 	docker-compose down

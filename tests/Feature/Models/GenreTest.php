@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Models;
+namespace Tests\Feature\Models;
 
 use App\Models\Genre;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -37,10 +37,7 @@ class GenreTest extends TestCase
         $genre = Genre::factory(['name' => 'teste'])->create();
         $genre->refresh();
 
-        // regex to validadate uuid v4
-        $regex = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
-
-        self::assertTrue((bool) preg_match($regex, $genre->id));
+        self::assertTrue((bool) preg_match(self::REGEX_TO_TEST_UUID4, $genre->id));
         self::assertEquals('teste', $genre->name);
         self::assertTrue($genre->is_active);
     }
