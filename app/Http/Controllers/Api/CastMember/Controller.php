@@ -10,6 +10,7 @@ use App\Services\CastMember\GetAllCastMemberService;
 use App\Services\CastMember\GetOneCastMemberService;
 use App\Services\CastMember\RemoveCastMemberService;
 use App\Services\CastMember\UpdateCastMemberService;
+use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
@@ -32,9 +33,9 @@ class Controller extends AbstractController
         );
     }
 
-    public function factoryDTO(array $data): CastMemberDTO
+    public function factoryDTO(Request $request): CastMemberDTO
     {
-        return CastMemberDTOFactory::make($data);
+        return CastMemberDTOFactory::make($request);
     }
 
     #[ArrayShape(['name' => "string", 'type' => "string"])]

@@ -36,7 +36,7 @@ abstract class AbstractController extends Controller
     public function store(Request $request): JsonResponse
     {
         $this->validateRequest($request);
-        $entity = $this->createService->execute($this->factoryDTO($request->all()));
+        $entity = $this->createService->execute($this->factoryDTO($request));
 
         return response()->json($entity, Response::HTTP_CREATED);
     }
@@ -46,7 +46,7 @@ abstract class AbstractController extends Controller
     {
         $this->validateRequest($request);
         $entity = $this->updateService->execute(
-            $this->factoryDTO($request->all()),
+            $this->factoryDTO($request),
             $entityName
         );
 
@@ -71,5 +71,5 @@ abstract class AbstractController extends Controller
 
     abstract public function rules(): array;
 
-    abstract public function factoryDTO(array $data): DataTransferObject;
+    abstract public function factoryDTO(Request $request): DataTransferObject;
 }

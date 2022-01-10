@@ -10,6 +10,7 @@ use App\Services\Video\GetAllVideoService;
 use App\Services\Video\GetOneVideoService;
 use App\Services\Video\RemoveVideoService;
 use App\Services\Video\UpdateVideoService;
+use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
@@ -40,7 +41,8 @@ class Controller extends AbstractController
         'duration' => "string",
         'year_launched' => "string",
         'categories_ids' => "string",
-        'genres_ids' => "string"
+        'genres_ids' => "string",
+        'video_file' => "string"
     ])]
     public function rules(): array
     {
@@ -53,11 +55,12 @@ class Controller extends AbstractController
             'year_launched' => 'numeric',
             'categories_ids' => 'array|exists:categories,id,deleted_at,NULL',
             'genres_ids' => 'array|exists:genres,id,deleted_at,NULL',
+            'video_file' => 'mimetypes:video/mp4',
         ];
     }
 
-    public function factoryDTO(array $data): VideoDTO
+    public function factoryDTO(Request $request): VideoDTO
     {
-        return VideoDTOFactory::make($data);
+        return VideoDTOFactory::make($request);
     }
 }

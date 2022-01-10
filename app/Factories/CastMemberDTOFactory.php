@@ -3,11 +3,12 @@
 namespace App\Factories;
 
 use App\DTO\CastMemberDTO;
+use Illuminate\Http\Request;
 
 class CastMemberDTOFactory
 {
-    public static function make(array $data): CastMemberDTO
+    public static function make(Request $request): CastMemberDTO
     {
-        return new CastMemberDTO($data);
+        return new CastMemberDTO($request->all());
     }
 }

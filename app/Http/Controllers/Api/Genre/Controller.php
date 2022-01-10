@@ -10,6 +10,7 @@ use App\Services\Genre\GetAllGenreService;
 use App\Services\Genre\GetOneGenreService;
 use App\Services\Genre\RemoveGenreService;
 use App\Services\Genre\UpdateGenreService;
+use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
@@ -48,8 +49,8 @@ class Controller extends AbstractController
         ];
     }
 
-    public function factoryDTO(array $data): GenreDTO
+    public function factoryDTO(Request $request): GenreDTO
     {
-        return GenreDTOFactory::make($data);
+        return GenreDTOFactory::make($request);
     }
 }

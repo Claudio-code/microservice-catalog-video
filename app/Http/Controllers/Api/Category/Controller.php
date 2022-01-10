@@ -10,6 +10,7 @@ use App\Services\Category\GetAllCategoriesService;
 use App\Services\Category\GetOneCategoryService;
 use App\Services\Category\RemoveCategoryService;
 use App\Services\Category\UpdateCategoryService;
+use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
@@ -32,9 +33,9 @@ class Controller extends AbstractController
         );
     }
 
-    public function factoryDTO(array $data): DataTransferObject
+    public function factoryDTO(Request $request): DataTransferObject
     {
-        return  CategoryDTOFactory::make($data);
+        return  CategoryDTOFactory::make($request);
     }
 
     #[ArrayShape([
