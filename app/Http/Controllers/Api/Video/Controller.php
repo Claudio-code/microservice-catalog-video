@@ -41,8 +41,7 @@ class Controller extends AbstractController
         'duration' => "string",
         'year_launched' => "string",
         'categories_ids' => "string",
-        'genres_ids' => "string",
-        'video_file' => "string"
+        'genres_ids' => "string"
     ])]
     public function rules(): array
     {
@@ -55,7 +54,6 @@ class Controller extends AbstractController
             'year_launched' => 'numeric',
             'categories_ids' => 'array|exists:categories,id,deleted_at,NULL',
             'genres_ids' => 'array|exists:genres,id,deleted_at,NULL',
-            'video_file' => 'mimetypes:video/mp4',
         ];
     }
 

@@ -3,19 +3,22 @@
 namespace App\Models;
 
 use App\DTO\VideoDTO;
+use App\Models\AbstractModels\FileUpload;
 use App\Models\Traits\Uuid;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
-class Video extends Model
+class Video extends FileUpload
 {
     use HasFactory;
     use SoftDeletes;
     use Uuid;
+
+    protected array $filesFields = ['video_file'];
+    protected string $pathToSaveFiles = "/video";
 
     /** @var boolean */
     public $incrementing = false;
@@ -31,6 +34,7 @@ class Video extends Model
         'opened',
         'rating',
         'duration',
+        'video_file',
     ];
 
     /** @var string[] */
@@ -54,15 +58,19 @@ class Video extends Model
     /** @throws Exception */
     public function createVideo(VideoDTO $videoDTO): ?self
     {
+        $data = $videoDTO->toArray();
+        $filesToSave = $this->extractFiles($data);
         try {
             DB::beginTransaction();
-            $object = static::create($videoDTO->toArray());
+            $object = static::create($data);
             static::matchRelationship($object, $videoDTO);
+            $this->uploadFiles($filesToSave);
             $object->refresh();
             DB::commit();
 
             return $object;
         } catch (Exception $exception) {
+            $this->deleteFiles($filesToSave);
             DB::rollBack();
             throw $exception;
         }
@@ -71,17 +79,24 @@ class Video extends Model
     /** @throws Exception */
     public function updateVideo(VideoDTO $videoDTO): bool
     {
+        $data = $videoDTO->toArray();
+        $filesToSave = $this->extractFiles($data);
+        $oldFileName = $this->video_file ?? "";
         try {
             DB::beginTransaction();
             $updated = parent::update($videoDTO->toArray());
             if ($updated) {
-                // update file
+                $this->uploadFiles($filesToSave);
             }
             static::matchRelationship($this, $videoDTO);
             DB::commit();
+            if ($oldFileName !== $videoDTO->video_file?->hashName()) {
+                $this->deleteFile($oldFileName);
+            }
 
             return $updated;
         } catch (Exception $exception) {
+
             DB::rollBack();
             throw $exception;
         }

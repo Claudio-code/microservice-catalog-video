@@ -16,5 +16,5 @@ class VideoDTO extends DataTransferObject
     public array $categories_ids = [];
     /** @var array<string> */
     public array $genres_ids = [];
-    public UploadedFile $video_file;
+    public ?UploadedFile $video_file = null;
 }
