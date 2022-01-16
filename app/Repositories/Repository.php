@@ -16,7 +16,8 @@ class Repository
     /** @return LazyCollection<Model> */
     public function all(): LazyCollection
     {
-        return $this->model::all()->lazy();
+        return $this->model::all()
+            ->lazy();
     }
 
     public function create(DataTransferObject $dataTransferObject): Model
