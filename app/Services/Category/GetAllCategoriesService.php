@@ -4,12 +4,14 @@ namespace App\Services\Category;
 
 use App\Enums\RedisKeysEnum;
 use App\Enums\RedisTimeToLiveEnum;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\LazyCollection;
 
 class GetAllCategoriesService extends CategoryAbstractService
 {
-    public function execute(): Collection
+    /** @return LazyCollection<Model> */
+    public function execute(): LazyCollection
     {
         return Cache::remember(
             RedisKeysEnum::REDIS_KEY_ALL_CATEGORIES->value,

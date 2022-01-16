@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTO\DataTransferObject;
+use App\DTO\DTOInterface;
 use App\Exceptions\ValidateException;
 use App\Services\AbstractService;
 use Illuminate\Http\JsonResponse;
@@ -71,5 +72,5 @@ abstract class AbstractController extends Controller
 
     abstract public function rules(): array;
 
-    abstract public function factoryDTO(Request $request): DataTransferObject;
+    abstract public function factoryDTO(Request $request): DTOInterface;
 }
