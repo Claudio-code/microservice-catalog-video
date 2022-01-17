@@ -10,6 +10,7 @@ use App\Repositories\GenreRepository;
 use App\Services\Genre\CreateGenreService;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 use Tests\Traits\FactoriesToCreateEntities;
 use Tests\Traits\TestValidations;
@@ -28,12 +29,13 @@ class CreateGenreServiceTest extends TestCase
         parent::setUp();
         $this->repository = new GenreRepository(new Genre());
         $this->service = new CreateGenreService(new Genre());
-        $this->data = [
+        $this->data = new Request();
+        $this->data->merge([
             "name" => "nonsense",
             "is_active" => true,
             "videos_ids" => ["4f3f-a46d-f4561bed29da"],
             "categories_ids" => ["-a46d-f4561bed29da"],
-        ];
+        ]);
     }
 
     public function testRollbackInGenreCreateIfVideoIdIsInvalid(): void
@@ -98,11 +100,11 @@ class CreateGenreServiceTest extends TestCase
         $categoriesIds = $newGenre->categories()->allRelatedIds();
 
         self::assertEquals($video::class, Video::class);
-        self::assertEquals($this->data['videos_ids'][0], $video->id);
-        self::assertEquals($this->data['videos_ids'], $videosIds->toArray());
+        self::assertEquals($this->data->get('videos_ids')[0], $video->id);
+        self::assertEquals($this->data->get('videos_ids'), $videosIds->toArray());
 
         self::assertEquals($category::class, Category::class);
-        self::assertEquals($this->data['categories_ids'][0], $category->id);
-        self::assertEquals($this->data['categories_ids'], $categoriesIds->toArray());
+        self::assertEquals($this->data->get('categories_ids')[0], $category->id);
+        self::assertEquals($this->data->get('categories_ids'), $categoriesIds->toArray());
     }
 }

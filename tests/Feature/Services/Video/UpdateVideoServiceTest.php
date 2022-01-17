@@ -10,19 +10,20 @@ use App\Repositories\VideoRepository;
 use App\Services\Video\UpdateVideoService;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\Request;
 use Tests\TestCase;
+use Tests\Traits\FactoriesToCreateEntities;
 use Tests\Traits\TestValidations;
 
 class UpdateVideoServiceTest extends TestCase
 {
     use DatabaseMigrations;
     use TestValidations;
+    use FactoriesToCreateEntities;
 
     private Video $video;
     private UpdateVideoService $service;
     private VideoRepository $repository;
-    /** @var array<string, mixed> */
-    private array $data;
 
     protected function setUp(): void
     {
@@ -30,7 +31,8 @@ class UpdateVideoServiceTest extends TestCase
         $this->video = Video::factory()->create();
         $this->repository = new VideoRepository(new Video());
         $this->service = new UpdateVideoService(new Video());
-        $this->data = [
+        $this->data = new Request();
+        $this->data->merge([
             "title" => "lorem ipsolom",
             "description" => "qd qwd qwdq wdqwd qwdwqrgerr",
             "opened" => false,
@@ -39,7 +41,7 @@ class UpdateVideoServiceTest extends TestCase
             "year_launched" => 2001,
             "categories_ids" => ["4f3f-a46d-f4561bed29da"],
             "genres_ids" => ["-a46d-f4561bed29da"],
-        ];
+        ]);
     }
 
     public function testRollbackInVideoUpdateIfCategoryIdIsInvalid(): void
@@ -108,24 +110,11 @@ class UpdateVideoServiceTest extends TestCase
         $genre = $newVideo->genres()->first();
 
         self::assertEquals($category::class, Category::class);
-        self::assertEquals($this->data['categories_ids'][0], $category->id);
-        self::assertEquals($this->data['categories_ids'], $categoriesIds->toArray());
+        self::assertEquals($this->data->get('categories_ids')[0], $category->id);
+        self::assertEquals($this->data->get('categories_ids'), $categoriesIds->toArray());
 
         self::assertEquals($genre::class, Genre::class);
-        self::assertEquals($this->data['genres_ids'][0], $genre->id);
-        self::assertEquals($this->data['genres_ids'], $genresIds->toArray());
-    }
-
-
-    private function factoryValidCategory(): void
-    {
-        $category = Category::factory()->create();
-        $this->data['categories_ids'] = [$category->id];
-    }
-
-    private function factoryValidGenre(): void
-    {
-        $genre = Genre::factory()->create();
-        $this->data['genres_ids'] = [$genre->id];
+        self::assertEquals($this->data->get('genres_ids')[0], $genre->id);
+        self::assertEquals($this->data->get('genres_ids'), $genresIds->toArray());
     }
 }
