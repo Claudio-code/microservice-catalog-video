@@ -58,28 +58,24 @@ abstract class FileUpload extends Model
      */
     public function extractFiles(array &$attributes = []): array
     {
-        $files = [];
-        foreach ($this->filesFields as $field) {
+        return array_reduce(array: $this->filesFields, callback: function ($accumulate, $field) use ($attributes) {
             if (!isset($attributes[$field])) {
-                continue;
+                return $accumulate;
             }
             if (!($attributes[$field] instanceof UploadedFile)) {
-                continue;
+                return $accumulate;
             }
-
-            $files[] = $attributes[$field];
+            $accumulate[] = $attributes[$field];
             $attributes[$field] = $attributes[$field]->hashName();
-        }
-
-        return $files;
+            return $accumulate;
+        }, initial: []);
     }
 
     private function getFileName(string|UploadedFile $file): string
     {
-        if (is_string($file)) {
-            return $file;
-        }
-
-        return $file->hashName();
+        return match (is_string($file)) {
+            true => $file,
+            default => $file->hashName(),
+        };
     }
 }
