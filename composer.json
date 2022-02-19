@@ -10,10 +10,10 @@
     "require": {
         "php": "^8.1",
         "fideloper/proxy": "^4.4.1",
-        "friendsofphp/php-cs-fixer": "^v2.19.2",
+        "friendsofphp/php-cs-fixer": "^v3.4.0",
         "fruitcake/laravel-cors": "^v2.0.4",
         "guzzlehttp/guzzle": "^7.4.0",
-        "illuminate/redis": "^v8.69.0",
+        "illuminate/redis": "^v8.74.0",
         "laravel-lang/lang": "^10.1.10",
         "laravel/framework": "^v8.68.1",
         "laravel/tinker": "^v2.6.2",

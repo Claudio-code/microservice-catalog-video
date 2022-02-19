@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\DTO\DataTransferObject;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\LazyCollection;
 
 class Repository
 {
@@ -13,9 +13,11 @@ class Repository
     ) {
     }
 
-    public function all(): Collection
+    /** @return LazyCollection<Model> */
+    public function all(): LazyCollection
     {
-        return $this->model::all();
+        return $this->model::all()
+            ->lazy();
     }
 
     public function create(DataTransferObject $dataTransferObject): Model

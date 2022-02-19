@@ -2,56 +2,55 @@
 
 namespace App\Http\Controllers\Api\Category;
 
-use App\DTO\CategoryDTO;
-use App\Http\Controllers\Controller as AppController;
+use App\DTO\DataTransferObject;
+use App\Factories\CategoryDTOFactory;
+use App\Http\Controllers\AbstractController;
 use App\Services\Category\CreateCategoryService;
 use App\Services\Category\GetAllCategoriesService;
 use App\Services\Category\GetOneCategoryService;
 use App\Services\Category\RemoveCategoryService;
 use App\Services\Category\UpdateCategoryService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use Spatie\DataTransferObject\Exceptions\UnknownProperties;
+use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
-class Controller extends AppController
+class Controller extends AbstractController
 {
-    public function index(GetAllCategoriesService $service): JsonResponse
-    {
-        return response()->json($service->execute());
-    }
-
-    /**
-     * @throws UnknownProperties
-     */
-    public function store(CreateCategoryService $service, FormRequest $formRequest): JsonResponse
-    {
-        $category = $service->execute(CategoryDTO::factory($formRequest->all()));
-
-        return response()->json($category, Response::HTTP_CREATED);
-    }
-
-    public function show(string $category, GetOneCategoryService $service): JsonResponse
-    {
-        return response()->json($service->execute($category));
-    }
-
-    /**
-     * @throws UnknownProperties
-     */
-    public function update(UpdateCategoryService $service, FormRequest $formRequest, string $category): JsonResponse
-    {
-        $category = $service->execute(
-            categoryDTO: CategoryDTO::factory($formRequest->all()),
-            categoryId: $category,
+    #[Pure]
+    public function __construct(
+        GetAllCategoriesService $indexService,
+        GetOneCategoryService   $showService,
+        CreateCategoryService   $createService,
+        UpdateCategoryService   $updateService,
+        RemoveCategoryService   $deleteService,
+    ) {
+        parent::__construct(
+            indexService:   $indexService,
+            showService:    $showService,
+            createService:  $createService,
+            updateService:  $updateService,
+            deleteService:  $deleteService,
         );
-
-        return response()->json($category, Response::HTTP_OK);
     }
 
-    public function destroy(RemoveCategoryService $service, string $category): Response
+    public function factoryDTO(Request $request): DataTransferObject
     {
-        $service->execute($category);
+        return  CategoryDTOFactory::make($request);
+    }
 
-        return response()->noContent();
+    #[ArrayShape([
+        'name' => "string",
+        'is_active' => "string",
+        'genres_ids' => "string",
+        'videos_ids' => "string"
+    ])]
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'is_active' => 'boolean',
+            'genres_ids' => 'array|exists:genres,id,deleted_at,NULL',
+            'videos_ids' => 'array|exists:genres,id,deleted_at,NULL',
+        ];
     }
 }

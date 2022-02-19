@@ -13,15 +13,6 @@ coverage:
 list-all-routes:
 	docker exec -it micro-videos-app bash -c  "php artisan route:list"
 
-require:
-	.cli/composer-add-dependency.sh
-
-model:
-	.cli/make-model.sh
-
-new-test:
-	.cli/make-test.sh
-
 start:
 	docker-compose up -d
 

@@ -3,48 +3,54 @@
 namespace App\Http\Controllers\Api\Genre;
 
 use App\DTO\GenreDTO;
-use App\Http\Controllers\Controller as AppController;
+use App\Factories\GenreDTOFactory;
+use App\Http\Controllers\AbstractController;
 use App\Services\Genre\CreateGenreService;
 use App\Services\Genre\GetAllGenreService;
 use App\Services\Genre\GetOneGenreService;
 use App\Services\Genre\RemoveGenreService;
 use App\Services\Genre\UpdateGenreService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
-class Controller extends AppController
+class Controller extends AbstractController
 {
-    public function index(GetAllGenreService $service): JsonResponse
-    {
-        return response()->json($service->execute());
-    }
-
-    public function show(string $genre, GetOneGenreService $service): JsonResponse
-    {
-        return response()->json($service->execute($genre));
-    }
-
-    public function store(FormRequest $formRequest, CreateGenreService $service): JsonResponse
-    {
-        $genre = $service->execute(GenreDTO::factory($formRequest->all()));
-
-        return response()->json($genre, Response::HTTP_CREATED);
-    }
-
-    public function update(UpdateGenreService $service, FormRequest $formRequest, string $genre): JsonResponse
-    {
-        $genre = $service->execute(
-            genreDTO: GenreDTO::factory($formRequest->all()),
-            genreId: $genre,
+    #[Pure]
+    public function __construct(
+        GetAllGenreService   $indexService,
+        GetOneGenreService   $showService,
+        CreateGenreService   $createService,
+        UpdateGenreService   $updateService,
+        RemoveGenreService   $deleteService,
+    ) {
+        parent::__construct(
+            indexService:   $indexService,
+            showService:    $showService,
+            createService:  $createService,
+            updateService:  $updateService,
+            deleteService:  $deleteService,
         );
-
-        return response()->json($genre, Response::HTTP_OK);
     }
 
-    public function destroy(RemoveGenreService $service, string $genre): Response
+    #[ArrayShape([
+        'name' => "string",
+        'is_active' => "string",
+        'categories_ids' => "string",
+        'videos_ids' => "string"
+    ])]
+    public function rules(): array
     {
-        $service->execute($genre);
+        return [
+            'name' => 'required|string|max:255',
+            'is_active' => 'boolean',
+            'categories_ids' => 'array|exists:genres,id,deleted_at,NULL',
+            'videos_ids' => 'array|exists:genres,id,deleted_at,NULL',
+        ];
+    }
 
-        return response()->noContent();
+    public function factoryDTO(Request $request): GenreDTO
+    {
+        return GenreDTOFactory::make($request);
     }
 }

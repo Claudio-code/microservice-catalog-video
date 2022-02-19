@@ -3,48 +3,62 @@
 namespace App\Http\Controllers\Api\Video;
 
 use App\DTO\VideoDTO;
-use App\Http\Controllers\Controller as AppController;
+use App\Factories\VideoDTOFactory;
+use App\Http\Controllers\AbstractController;
 use App\Services\Video\CreateVideoService;
 use App\Services\Video\GetAllVideoService;
 use App\Services\Video\GetOneVideoService;
 use App\Services\Video\RemoveVideoService;
 use App\Services\Video\UpdateVideoService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
-class Controller extends AppController
+class Controller extends AbstractController
 {
-    public function index(GetAllVideoService $service): JsonResponse
-    {
-        return response()->json($service->execute());
-    }
-
-    public function show(string $video, GetOneVideoService $service): JsonResponse
-    {
-        return response()->json($service->execute($video));
-    }
-
-    public function store(FormRequest $formRequest, CreateVideoService $service): JsonResponse
-    {
-        $video = $service->execute(VideoDTO::factory($formRequest->all()));
-
-        return response()->json($video, Response::HTTP_CREATED);
-    }
-
-    public function update(UpdateVideoService $service, FormRequest $formRequest, string $video): JsonResponse
-    {
-        $videoSalved = $service->execute(
-            videoDTO: VideoDTO::factory($formRequest->all()),
-            videoId: $video,
+    #[Pure]
+    public function __construct(
+        GetAllVideoService  $indexService,
+        GetOneVideoService  $showService,
+        CreateVideoService  $createService,
+        UpdateVideoService  $updateService,
+        RemoveVideoService  $deleteService,
+    ) {
+        parent::__construct(
+            indexService:   $indexService,
+            showService:    $showService,
+            createService:  $createService,
+            updateService:  $updateService,
+            deleteService:  $deleteService,
         );
-
-        return response()->json($videoSalved);
     }
 
-    public function destroy(RemoveVideoService $service, string $video): Response
+    #[ArrayShape([
+        'title' => "string",
+        'description' => "string",
+        'opened' => "string",
+        'rating' => "string",
+        'duration' => "string",
+        'year_launched' => "string",
+        'categories_ids' => "string",
+        'genres_ids' => "string"
+    ])]
+    public function rules(): array
     {
-        $service->execute($video);
+        return [
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'opened' => 'boolean',
+            'rating' => 'numeric',
+            'duration' => 'numeric',
+            'year_launched' => 'numeric',
+            'categories_ids' => 'array|exists:categories,id,deleted_at,NULL',
+            'genres_ids' => 'array|exists:genres,id,deleted_at,NULL',
+        ];
+    }
 
-        return response()->noContent();
+    public function factoryDTO(Request $request): VideoDTO
+    {
+        return VideoDTOFactory::make($request);
     }
 }

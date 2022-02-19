@@ -2,8 +2,6 @@
 
 namespace App\DTO;
 
-use Spatie\DataTransferObject\Exceptions\UnknownProperties;
-
 class GenreDTO extends DataTransferObject
 {
     public string $name;
@@ -14,14 +12,4 @@ class GenreDTO extends DataTransferObject
 
     /** @var array<string> */
     public array $videos_ids = [];
-
-    /**
-     * @param array<string, mixed> $data
-     *
-     * @throws UnknownProperties
-     */
-    public static function factory(array $data): self
-    {
-        return new self($data);
-    }
 }

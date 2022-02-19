@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Services\Video;
 
-use App\DTO\VideoDTO;
+use App\Factories\VideoDTOFactory;
 use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Video;
@@ -10,6 +10,7 @@ use App\Repositories\VideoRepository;
 use App\Services\Video\CreateVideoService;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 use Tests\Traits\FactoriesToCreateEntities;
 use Tests\Traits\TestValidations;
@@ -28,7 +29,8 @@ class CreateVideoServiceTest extends TestCase
         parent::setUp();
         $this->repository = new VideoRepository(new Video());
         $this->service = new CreateVideoService(new Video());
-        $this->data = [
+        $this->data = new Request();
+        $this->data->merge([
             "title" => "lorem ipsolom",
             "description" => "qd qwd qwdq wdqwd qwdwqrgerr",
             "opened" => false,
@@ -37,7 +39,7 @@ class CreateVideoServiceTest extends TestCase
             "year_launched" => 2001,
             "categories_ids" => ["4f3f-a46d-f4561bed29da"],
             "genres_ids" => ["-a46d-f4561bed29da"],
-        ];
+        ]);
     }
 
     public function testRollbackInVideoCreateIfCategoryIdIsInvalid(): void
@@ -45,7 +47,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidGenre();
 
         try {
-            $dto = VideoDTO::factory($this->data);
+            $dto = VideoDTOFactory::make($this->data);
             $this->service->execute($dto);
         } catch (QueryException) {
             self::assertEmpty($this->repository->all()->toArray());
@@ -57,7 +59,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidGenre();
 
         $this->expectException(QueryException::class);
-        $dto = VideoDTO::factory($this->data);
+        $dto = VideoDTOFactory::make($this->data);
         $this->service->execute($dto);
     }
 
@@ -66,7 +68,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidCategory();
 
         try {
-            $dto = VideoDTO::factory($this->data);
+            $dto = VideoDTOFactory::make($this->data);
             $this->service->execute($dto);
         } catch (QueryException) {
             self::assertEmpty($this->repository->all()->toArray());
@@ -78,7 +80,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidCategory();
 
         $this->expectException(QueryException::class);
-        $dto = VideoDTO::factory($this->data);
+        $dto = VideoDTOFactory::make($this->data);
         $this->service->execute($dto);
     }
 
@@ -87,7 +89,7 @@ class CreateVideoServiceTest extends TestCase
         $this->factoryValidGenre();
         $this->factoryValidCategory();
 
-        $dto = VideoDTO::factory($this->data);
+        $dto = VideoDTOFactory::make($this->data);
         $this->service->execute($dto);
 
         /** @var Video $newVideo */
@@ -100,11 +102,11 @@ class CreateVideoServiceTest extends TestCase
         $genre = $newVideo->genres()->first();
 
         self::assertEquals($category::class, Category::class);
-        self::assertEquals($this->data['categories_ids'][0], $category->id);
-        self::assertEquals($this->data['categories_ids'], $categoriesIds->toArray());
+        self::assertEquals($this->data->get('categories_ids')[0], $category->id);
+        self::assertEquals($this->data->get('categories_ids'), $categoriesIds->toArray());
 
         self::assertEquals($genre::class, Genre::class);
-        self::assertEquals($this->data['genres_ids'][0], $genre->id);
-        self::assertEquals($this->data['genres_ids'], $genresIds->toArray());
+        self::assertEquals($this->data->get('genres_ids')[0], $genre->id);
+        self::assertEquals($this->data->get('genres_ids'), $genresIds->toArray());
     }
 }

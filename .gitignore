@@ -13,3 +13,4 @@ npm-debug.log
 yarn-error.log
 /.docker/dbdata/*
 .php_cs.cache
+/storage/storage/app/*
