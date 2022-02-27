@@ -31,6 +31,7 @@ class Controller extends AbstractController
             'year_launched' => 'numeric',
             'categories_ids' => 'array|exists:categories,id,deleted_at,NULL',
             'genres_ids' => 'array|exists:genres,id,deleted_at,NULL',
+            'video_file' => 'mimes:mp4,mov,ogg'
         ];
         parent::__construct(
             indexService:   $indexService,

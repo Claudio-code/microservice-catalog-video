@@ -13,6 +13,6 @@ class UpdateVideoService extends VideoAbstractService
 
         return $this->repository
             ->setModel($video)
-            ->update($videoDTO);
+            ->updateVideo($videoDTO);
     }
 }

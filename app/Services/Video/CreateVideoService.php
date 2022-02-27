@@ -9,6 +9,6 @@ class CreateVideoService extends VideoAbstractService
 {
     public function execute(DataTransferObject $videoDTO): Model
     {
-        return $this->repository->create($videoDTO);
+        return $this->repository->createVideo($videoDTO);
     }
 }

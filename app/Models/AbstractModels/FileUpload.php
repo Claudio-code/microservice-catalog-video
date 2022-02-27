@@ -58,7 +58,7 @@ abstract class FileUpload extends Model
      */
     public function extractFiles(array &$attributes = []): array
     {
-        return array_reduce(array: $this->filesFields, callback: function ($accumulate, $field) use ($attributes) {
+        return array_reduce(array: $this->filesFields, callback: function ($accumulate, $field) use (&$attributes) {
             if (!isset($attributes[$field])) {
                 return $accumulate;
             }

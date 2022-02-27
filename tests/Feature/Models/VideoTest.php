@@ -6,11 +6,14 @@ use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Tests\Traits\VideoFileUpdateTrait;
 
 class VideoTest extends TestCase
 {
     use DatabaseMigrations;
+    use VideoFileUpdateTrait;
 
     public function testRelationshipWithGenre(): void
     {
@@ -93,5 +96,44 @@ class VideoTest extends TestCase
         ]);
 
         self::assertEquals('lorem ipsolom', $video->title);
+    }
+
+    public function testIfCreateVideoFile(): void
+    {
+        $videoFile = $this->getValidFileVideo();
+        /** @var Video $video */
+        $video = Video::factory()->create();
+        $video->uploadFile($videoFile);
+        Storage::assertExists("video/{$videoFile->hashName()}");
+    }
+
+    public function testIfUpdateVideoFile(): void
+    {
+        $videoToCreate = $this->getValidFileVideo();
+        $videoToUpdate = $this->getValidFileVideo();
+        /** @var Video $video */
+        $video = Video::factory()->create();
+
+        $video->uploadFile($videoToCreate);
+        Storage::assertExists("video/{$videoToCreate->hashName()}");
+
+        $video->deleteFile($videoToCreate);
+        Storage::assertMissing("video/{$videoToCreate->hashName()}");
+
+        $video->uploadFile($videoToUpdate);
+        Storage::assertExists("video/{$videoToUpdate->hashName()}");
+    }
+
+    public function testIfDeleteVideoFile(): void
+    {
+        $videoFile = $this->getValidFileVideo();
+        /** @var Video $video */
+        $video = Video::factory()->create();
+
+        $video->uploadFile($videoFile);
+        Storage::assertExists("video/{$videoFile->hashName()}");
+
+        $video->deleteFiles([$videoFile]);
+        Storage::assertMissing("video/{$videoFile->hashName()}");
     }
 }

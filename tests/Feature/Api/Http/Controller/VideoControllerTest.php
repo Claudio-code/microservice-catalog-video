@@ -5,14 +5,17 @@ namespace Tests\Feature\Api\Http\Controller;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 use Tests\TestCase;
 use Tests\Traits\TestValidations;
+use Tests\Traits\VideoFileUpdateTrait;
 
 class VideoControllerTest extends TestCase
 {
     use DatabaseMigrations;
     use TestValidations;
+    use VideoFileUpdateTrait;
 
     public function testIndex(): void
     {
@@ -84,7 +87,6 @@ class VideoControllerTest extends TestCase
 
     public function testInvalidFieldsInPost(): void
     {
-
         // categories_ids
         $data = ['categories_ids' => 'w'];
         $this->assertInvalidationInStoreAction(
@@ -166,6 +168,43 @@ class VideoControllerTest extends TestCase
     public function testCreate(): void
     {
         $title = str_repeat(string: 'w', times: 12);
+        $description = str_repeat(string: 'wds', times: 12);
+        $opened = (bool)rand(0, 1);
+        $rating = rand(0, 5);
+        $duration = rand(21, 40);
+        $year_launched = rand(2000, 2022);
+        $video = $this->getValidFileVideo();
+        $response = $this->json(method: 'POST', uri: route('video.store', [
+            'title' => $title,
+            'description' => $description,
+            'opened' => $opened,
+            'rating' => $rating,
+            'duration' => $duration,
+            'year_launched' => $year_launched,
+        ]), data: ['video_file' => $video]);
+        $response
+            ->assertCreated()
+            ->assertJsonFragment([
+                'title' => $title,
+                'duration' => $duration,
+                'description' => $description,
+                'opened' => $opened,
+                'year_launched' => $year_launched,
+                'video_file' => $video->hashName(),
+            ]);
+        self::assertKeysInResponseBody([
+            'title',
+            'description',
+            'opened',
+            'rating',
+            'duration',
+            'video_file',
+        ], $response);
+    }
+
+    public function testCreateWithInvalidFile(): void
+    {
+        $title = str_repeat(string: 'w', times: 12);
         $description = str_repeat(string: 'wds ', times: 12);
         $opened = rand(0, 1);
         $rating = rand(0, 5);
@@ -179,26 +218,23 @@ class VideoControllerTest extends TestCase
             'rating' => $rating,
             'duration' => $duration,
             'year_launched' => $year_launched,
-        ]));
+        ]), data: ['video_file' => $this->getInvalidFilePhoto()]);
 
-        $response
-            ->assertCreated()
-            ->assertJsonFragment([
-                'title' => $title,
-                'duration' => $duration,
-            ]);
-        self::assertKeysInResponseBody([
-            'title',
-            'description',
-            'opened',
-            'rating',
-            'duration',
-        ], $response);
+        self::assertInvalidationJson(
+            response: $response,
+            jsonValidationsErrorsFields: ['video_file'],
+            jsonFragmentValidations: [],
+        );
     }
 
     public function testUpdate(): void
     {
-        $video = Video::factory()->create();
+        $videoToCreate = $this->getValidFileVideo();
+        $videoToUpdate = $this->getValidFileVideo();
+        /** @var Video $video */
+        $video = Video::factory(['video_file' => $videoToCreate])->create();
+        $video->uploadFiles([$videoToCreate]);
+
         $title = str_repeat(string: 'dw', times: 12);
         $description = str_repeat(string: 'wds ', times: 12);
         $opened = rand(0, 1);
@@ -208,36 +244,47 @@ class VideoControllerTest extends TestCase
 
         $response = $this->json(
             method: 'PUT',
-            uri: route('video.update', ['video' => $video->id]),
-            data: [
+            uri: route('video.update', [
+                'video' => $video->id,
                 'title' => $title,
                 'description' => $description,
                 'opened' => $opened,
                 'rating' => $rating,
                 'duration' => $duration,
-                'year_launched' => $year_launched,
-            ],
+                'year_launched' => $year_launched,]),
+            data: ['video_file' => $videoToUpdate],
         );
-
         $response
             ->assertOk()
-            ->assertJsonFragment(['title' => $title]);
+            ->assertJsonFragment([
+                'title' => $title,
+                'video_file' => $videoToUpdate->hashName(),
+            ]);
+        Storage::assertExists("video/{$videoToUpdate->hashName()}");
         self::assertKeysInResponseBody([
             'title',
             'description',
             'opened',
             'rating',
             'duration',
+            'video_file',
         ], $response);
     }
 
     public function testDelete(): void
     {
-        $video = Video::factory()->create();
+        $videoFile = $this->getValidFileVideo();
+        /** @var Video $video */
+        $video = Video::factory([
+            'video_file' => $videoFile->hashName(),
+        ])->create();
+        $video->uploadFiles([$videoFile]);
+        $video->refresh();
         $response = $this->json(method: 'DELETE', uri: route('video.destroy', [
             'video' => $video->id,
         ]));
 
+        Storage::assertMissing("video/{$videoFile->hashName()}");
         $response
             ->assertStatus(Response::HTTP_NO_CONTENT)
             ->assertNoContent();
@@ -248,8 +295,6 @@ class VideoControllerTest extends TestCase
         $response = $this->json(method: 'DELETE', uri: route('video.destroy', [
             'video' => RamseyUuid::uuid4(),
         ]));
-
-
         $response->assertStatus(404);
     }
 }

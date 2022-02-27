@@ -6,6 +6,6 @@ class RemoveVideoService extends VideoAbstractService
 {
     public function execute(string $videoId): void
     {
-        $this->repository->delete($videoId);
+        $this->repository->deleteVideo($videoId);
     }
 }

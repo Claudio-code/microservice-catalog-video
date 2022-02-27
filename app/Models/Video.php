@@ -84,16 +84,16 @@ class Video extends FileUpload
         $oldFileName = $this->video_file ?? "";
         try {
             DB::beginTransaction();
-            $updated = parent::update($videoDTO->toArray());
+            $updated = parent::update($data);
             if ($updated) {
                 $this->uploadFiles($filesToSave);
             }
+            $this->refresh();
             static::matchRelationship($this, $videoDTO);
             DB::commit();
             if ($oldFileName !== $videoDTO->video_file?->hashName()) {
                 $this->deleteFile($oldFileName);
             }
-
             return $updated;
         } catch (Exception $exception) {
 
