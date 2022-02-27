@@ -5,9 +5,9 @@ namespace App\Factories;
 use App\DTO\CastMemberDTO;
 use Illuminate\Http\Request;
 
-class CastMemberDTOFactory
+class CastMemberDTOFactory extends AbstractFactory
 {
-    public static function make(Request $request): CastMemberDTO
+    protected function build(Request $request): CastMemberDTO
     {
         return new CastMemberDTO($request->all());
     }

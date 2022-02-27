@@ -41,6 +41,9 @@ class VideoControllerTest extends TestCase
         $video = Video::factory()->create();
         $response = $this->json(method: 'PUT', uri: route('video.update', [
             'video' => $video->id,
+            'opened' => true,
+            'duration' => 332,
+            'year_launched' => 2020,
             'title' => str_repeat(string: 'w', times: 300),
         ]));
 

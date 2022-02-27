@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Services\Category;
 
+use App\DTO\DataTransferObject;
 use App\Factories\CategoryDTOFactory;
 use App\Models\Category;
 use App\Models\Genre;
@@ -41,13 +42,17 @@ class UpdateCategoryServiceTest extends TestCase
         ]);
     }
 
+    private function buildFactory(): DataTransferObject
+    {
+        $factory = new CategoryDTOFactory();
+        return $factory->make($this->data);
+    }
+
     public function testRollbackInCategoryUpdateIfVideoIdIsInvalid(): void
     {
         $this->factoryValidGenre();
-
         try {
-            $dto = CategoryDTOFactory::make($this->data);
-            $this->service->execute($dto, $this->category->id);
+            $this->service->execute($this->buildFactory(), $this->category->id);
         } catch (QueryException) {
             /** @var Category $category */
             $category = $this->repository->all()->first();
@@ -59,10 +64,8 @@ class UpdateCategoryServiceTest extends TestCase
     public function testRollbackInCategoryUpdateIfGenreIdIsInvalid(): void
     {
         $this->factoryValidVideo();
-
         try {
-            $dto = CategoryDTOFactory::make($this->data);
-            $this->service->execute($dto, $this->category->id);
+            $this->service->execute($this->buildFactory(), $this->category->id);
         } catch (QueryException) {
             /** @var Category $category */
             $category = $this->repository->all()->first();
@@ -74,28 +77,22 @@ class UpdateCategoryServiceTest extends TestCase
     public function testRollbackInCategoryUpdateIfVideoIdIsInvalidThrowQueryException(): void
     {
         $this->factoryValidGenre();
-
         $this->expectException(QueryException::class);
-        $dto = CategoryDTOFactory::make($this->data);
-        $this->service->execute($dto, $this->category->id);
+        $this->service->execute($this->buildFactory(), $this->category->id);
     }
 
     public function testRollbackInCategoryUpdateIfGenreIdIsInvalidThrowQueryException(): void
     {
         $this->factoryValidVideo();
-
         $this->expectException(QueryException::class);
-        $dto = CategoryDTOFactory::make($this->data);
-        $this->service->execute($dto, $this->category->id);
+        $this->service->execute($this->buildFactory(), $this->category->id);
     }
 
     public function testCategoryUpdateIfGenreIdAndVideoIdIsValid(): void
     {
         $this->factoryValidVideo();
         $this->factoryValidGenre();
-
-        $dto = CategoryDTOFactory::make($this->data);
-        $this->service->execute($dto, $this->category->id);
+        $this->service->execute($this->buildFactory(), $this->category->id);
 
         /** @var Category $newCategory */
         $newCategory = $this->repository->all()->get(0);

@@ -5,9 +5,9 @@ namespace App\Factories;
 use App\DTO\CategoryDTO;
 use Illuminate\Http\Request;
 
-class CategoryDTOFactory
+class CategoryDTOFactory extends AbstractFactory
 {
-    public static function make(Request $request): CategoryDTO
+    protected function build(Request $request): CategoryDTO
     {
         return new CategoryDTO($request->all());
     }

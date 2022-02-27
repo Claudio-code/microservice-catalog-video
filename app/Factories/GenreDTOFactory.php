@@ -5,9 +5,9 @@ namespace App\Factories;
 use App\DTO\GenreDTO;
 use Illuminate\Http\Request;
 
-class GenreDTOFactory
+class GenreDTOFactory extends AbstractFactory
 {
-    public static function make(Request $request): GenreDTO
+    protected function build(Request $request): GenreDTO
     {
         return new GenreDTO($request->all());
     }

@@ -5,7 +5,7 @@ namespace App\DTO;
 class CategoryDTO extends DataTransferObject
 {
     public string $name;
-    public string $description;
+    public ?string $description = null;
     public bool $is_active;
 
     /** @var array<string> */

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Services\Video;
 
+use App\DTO\DataTransferObject;
 use App\Factories\VideoDTOFactory;
 use App\Models\Category;
 use App\Models\Genre;
@@ -44,13 +45,17 @@ class UpdateVideoServiceTest extends TestCase
         ]);
     }
 
+    private function buildFactory(): DataTransferObject
+    {
+        $factory = new VideoDTOFactory();
+        return $factory->make($this->data);
+    }
+
     public function testRollbackInVideoUpdateIfCategoryIdIsInvalid(): void
     {
         $this->factoryValidGenre();
-
         try {
-            $dto = VideoDTOFactory::make($this->data);
-            $this->service->execute($dto, $this->video->id);
+            $this->service->execute($this->buildFactory(), $this->video->id);
         } catch (QueryException) {
             /** @var Video $newVideo */
             $newVideo = $this->repository->all()->get(0);
@@ -62,19 +67,15 @@ class UpdateVideoServiceTest extends TestCase
     public function testRollbackInVideoUpdateIfCategoryIdIsInvalidThrowQueryException(): void
     {
         $this->factoryValidGenre();
-
         $this->expectException(QueryException::class);
-        $dto = VideoDTOFactory::make($this->data);
-        $this->service->execute($dto, $this->video->id);
+        $this->service->execute($this->buildFactory(), $this->video->id);
     }
 
     public function testRollbackInVideoUpdateIfGenreIdIsInvalid(): void
     {
         $this->factoryValidCategory();
-
         try {
-            $dto = VideoDTOFactory::make($this->data);
-            $this->service->execute($dto, $this->video->id);
+            $this->service->execute($this->buildFactory(), $this->video->id);
         } catch (QueryException) {
             /** @var Video $newVideo */
             $newVideo = $this->repository->all()->get(0);
@@ -86,19 +87,15 @@ class UpdateVideoServiceTest extends TestCase
     public function testRollbackInVideoUpdateIfGenreIdIsInvalidThrowQueryException(): void
     {
         $this->factoryValidCategory();
-
         $this->expectException(QueryException::class);
-        $dto = VideoDTOFactory::make($this->data);
-        $this->service->execute($dto, $this->video->id);
+        $this->service->execute($this->buildFactory(), $this->video->id);
     }
 
     public function testRollbackInVideoUpdateIfGenreIdAndCategoryIdIsValid(): void
     {
         $this->factoryValidGenre();
         $this->factoryValidCategory();
-
-        $dto = VideoDTOFactory::make($this->data);
-        $this->service->execute($dto, $this->video->id);
+        $this->service->execute($this->buildFactory(), $this->video->id);
 
         /** @var Video $newVideo */
         $newVideo = $this->repository->all()->get(0);

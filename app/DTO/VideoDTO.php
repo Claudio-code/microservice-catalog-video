@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 class VideoDTO extends DataTransferObject
 {
     public string $title;
-    public string $description;
+    public ?string $description = null;
     public bool $opened;
     public string $rating;
     public int $duration;

@@ -6,15 +6,14 @@ use App\DTO\VideoDTO;
 use App\Enums\RatingEnum;
 use Illuminate\Http\Request;
 
-class VideoDTOFactory
+class VideoDTOFactory extends AbstractFactory
 {
-    public static function make(Request $request): VideoDTO
+    protected function build(Request $request): VideoDTO
     {
         $data = $request->all();
         /** @var int | string $rating */
         $rating = $data['rating'] ?? 0;
         $data['rating'] = RatingEnum::formatter(positionRating: $rating);
-
         return new VideoDTO($data);
     }
 }
