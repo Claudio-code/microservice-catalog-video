@@ -9,6 +9,6 @@ class GenreDTOFactory extends AbstractFactory
 {
     protected function build(Request $request): GenreDTO
     {
-        return new GenreDTO($request->all());
+        return new GenreDTO(...$request->all());
     }
 }

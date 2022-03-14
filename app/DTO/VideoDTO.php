@@ -6,15 +6,18 @@ use Illuminate\Http\UploadedFile;
 
 class VideoDTO extends DataTransferObject
 {
-    public string $title;
-    public ?string $description = null;
-    public bool $opened;
-    public string $rating;
-    public int $duration;
-    public int $year_launched;
-    /** @var array<string> */
-    public array $categories_ids = [];
-    /** @var array<string> */
-    public array $genres_ids = [];
-    public ?UploadedFile $video_file = null;
+    public function __construct(
+        public readonly string $title,
+        public readonly bool $opened,
+        public readonly string $rating,
+        public readonly int $duration,
+        public readonly int $year_launched,
+        public readonly ?string $description = null,
+        public readonly array $categories_ids = [],
+        public readonly array $genres_ids = [],
+        public readonly ?UploadedFile $video_file = null,
+        public readonly ?UploadedFile $thumb_file = null,
+        public readonly ?UploadedFile $banner_file = null,
+        public readonly ?UploadedFile $trailer_file = null,
+    ) {}
 }

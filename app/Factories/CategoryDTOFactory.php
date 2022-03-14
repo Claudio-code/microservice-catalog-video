@@ -9,6 +9,6 @@ class CategoryDTOFactory extends AbstractFactory
 {
     protected function build(Request $request): CategoryDTO
     {
-        return new CategoryDTO($request->all());
+        return new CategoryDTO(...$request->all());
     }
 }

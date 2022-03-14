@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Video;
 
+use App\Enums\VideoEnum;
 use App\Factories\VideoDTOFactory;
 use App\Http\Controllers\AbstractController;
 use App\Services\Video\CreateVideoService;
@@ -31,7 +32,10 @@ class Controller extends AbstractController
             'year_launched' => 'numeric',
             'categories_ids' => 'array|exists:categories,id,deleted_at,NULL',
             'genres_ids' => 'array|exists:genres,id,deleted_at,NULL',
-            'video_file' => 'mimetypes:video/mp4|max:12'
+            'video_file' => 'mimetypes:video/mp4|max:' . VideoEnum::VIDEO_FILE_MAX_SIZE->value,
+            'trailer_file' => 'mimetypes:video/mp4|max:' . VideoEnum::TRAILER_FILE_MAX_SIZE->value,
+            'banner_file' => 'image|max:' . VideoEnum::BANNER_FILE_MAX_SIZE->value,
+            'thumb_file' => 'image|max:' . VideoEnum::THUMB_FILE_MAX_SIZE->value,
         ];
         parent::__construct(
             indexService:   $indexService,

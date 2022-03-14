@@ -17,8 +17,14 @@ class Video extends FileUpload
     use SoftDeletes;
     use Uuid;
 
-    protected array $filesFields = ['video_file'];
-    protected string $pathToSaveFiles = "/video";
+    protected array $filesFields = [
+        'video_file',
+        'banner_file',
+        'thumb_file',
+        'trailer_file',
+    ];
+
+    protected string $pathToSaveFiles = "/public/video";
 
     /** @var boolean */
     public $incrementing = false;
@@ -35,6 +41,9 @@ class Video extends FileUpload
         'rating',
         'duration',
         'video_file',
+        'thumb_file',
+        'banner_file',
+        'trailer_file',
     ];
 
     /** @var string[] */
@@ -96,7 +105,6 @@ class Video extends FileUpload
             }
             return $updated;
         } catch (Exception $exception) {
-
             DB::rollBack();
             throw $exception;
         }

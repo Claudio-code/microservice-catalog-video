@@ -14,6 +14,6 @@ class VideoDTOFactory extends AbstractFactory
         /** @var int | string $rating */
         $rating = $data['rating'] ?? 0;
         $data['rating'] = RatingEnum::formatter(positionRating: $rating);
-        return new VideoDTO($data);
+        return new VideoDTO(...$data);
     }
 }

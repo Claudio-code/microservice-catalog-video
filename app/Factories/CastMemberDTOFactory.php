@@ -9,6 +9,6 @@ class CastMemberDTOFactory extends AbstractFactory
 {
     protected function build(Request $request): CastMemberDTO
     {
-        return new CastMemberDTO($request->all());
+        return new CastMemberDTO(...$request->all());
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 abstract class AbstractFactory
 {
-    public function make(Request $request): DataTransferObject
+    public final function make(Request $request): DataTransferObject
     {
         return $this->build($request);
     }

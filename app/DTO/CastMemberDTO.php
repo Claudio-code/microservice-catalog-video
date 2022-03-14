@@ -4,6 +4,8 @@ namespace App\DTO;
 
 class CastMemberDTO extends DataTransferObject
 {
-    public string $name;
-    public ?int $type = null;
+    public function __construct(
+        public readonly string $name,
+        public readonly ?int $type = null,
+    ) {}
 }
