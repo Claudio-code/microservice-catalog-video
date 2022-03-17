@@ -13,6 +13,6 @@ abstract class GenreAbstractService extends AbstractService
     #[Pure]
     public function __construct(Genre $genre)
     {
-        $this->repository = new Repository($genre);
+        $this->repository = new GenreRepository($genre);
     }
 }
