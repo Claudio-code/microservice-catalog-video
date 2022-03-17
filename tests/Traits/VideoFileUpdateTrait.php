@@ -3,30 +3,20 @@
 namespace Tests\Traits;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 trait VideoFileUpdateTrait
 {
+    use StorageFakeTrait;
+
     private function getValidFileVideo(): UploadedFile
     {
         $this->setStorageFake();
-        return UploadedFile::fake()->create("{$this->getStringVideoName()}.mp4");
+        return UploadedFile::fake()->create("{$this->getStringRandomName()}.mp4");
     }
 
     private function getInvalidFilePhoto(): UploadedFile
     {
         $this->setStorageFake();
-        return UploadedFile::fake()->create($this->getStringVideoName());
-    }
-
-    private function setStorageFake(): void
-    {
-        Storage::fake();
-    }
-
-    private function getStringVideoName(): string
-    {
-        return Str::random(8);
+        return UploadedFile::fake()->create($this->getStringRandomName());
     }
 }
