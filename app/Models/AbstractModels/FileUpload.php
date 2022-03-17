@@ -47,7 +47,6 @@ abstract class FileUpload extends Model
         if (empty($file)) {
             return;
         }
-
         $pathOfThisFile = "{$this->pathToSaveFiles}/{$this->getFileName($file)}";
         Storage::delete($pathOfThisFile);
     }

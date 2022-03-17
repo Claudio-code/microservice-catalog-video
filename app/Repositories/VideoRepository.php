@@ -37,6 +37,9 @@ class VideoRepository extends Repository
         /** @var Video $video */
         $video = $this->show($videoId);
         $video->deleteFile($video->video_file);
+        $video->deleteFile($video->banner_file);
+        $video->deleteFile($video->thumb_file);
+        $video->deleteFile($video->trailer_file);
         $this->delete($videoId);
     }
 }
