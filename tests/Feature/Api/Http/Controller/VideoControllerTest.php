@@ -5,6 +5,7 @@ namespace Tests\Feature\Api\Http\Controller;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 use Tests\TestCase;
@@ -266,7 +267,7 @@ class VideoControllerTest extends TestCase
             'thumb_file' => $thumbToCreate,
             'banner_file' => $bannerToCreate,
         ])->create();
-        $video->uploadFiles([$videoToCreate, $trailerToCreate, $thumbToCreate, $bannerToCreate]);
+        $video->uploadFiles(Collection::make([$videoToCreate, $trailerToCreate, $thumbToCreate, $bannerToCreate]));
 
         $title = str_repeat(string: 'dw', times: 12);
         $description = str_repeat(string: 'wds ', times: 12);
@@ -326,7 +327,7 @@ class VideoControllerTest extends TestCase
             'thumb_file' => $thumbFile->hashName(),
             'banner_file' => $bannerFile->hashName(),
         ])->create();
-        $video->uploadFiles([$videoFile, $trailerFile, $thumbFile, $bannerFile]);
+        $video->uploadFiles(Collection::make([$videoFile, $trailerFile, $thumbFile, $bannerFile]));
         $video->refresh();
         $response = $this->json(method: 'DELETE', uri: route('video.destroy', [
             'video' => $video->id,
