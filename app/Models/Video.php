@@ -24,7 +24,7 @@ class Video extends FileUpload
         'trailer_file',
     ];
 
-    protected string $pathToSaveFiles = "/video";
+    protected string $pathToSaveFiles = "/video/";
 
     /** @var boolean */
     public $incrementing = false;

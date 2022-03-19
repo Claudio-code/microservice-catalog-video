@@ -99,6 +99,33 @@ class VideoTest extends TestCase
         self::assertEquals('lorem ipsolom', $video->title);
     }
 
+    public function testIfCreateTrailerFile(): void
+    {
+        $trailer = $this->getValidFileVideo();
+        /** @var Video $video */
+        $video = Video::factory()->create();
+        $video->uploadFile($trailer);
+
+        Storage::assertExists("video/{$trailer->hashName()}");
+    }
+
+    public function testIfUpdateTrailerFile(): void
+    {
+        $trailerCreate = $this->getValidFileVideo();
+        $trailerUpdate = $this->getValidFileVideo();
+        /** @var Video $video */
+        $video = Video::factory()->create();
+
+        $video->uploadFile($trailerCreate);
+        Storage::assertExists("video/{$trailerCreate->hashName()}");
+
+        $video->deleteFile($trailerCreate);
+        Storage::assertMissing("video/{$trailerCreate->hashName()}");
+
+        $video->uploadFile($trailerUpdate);
+        Storage::assertExists("video/{$trailerUpdate->hashName()}");
+    }
+
     public function testIfCreateVideoFile(): void
     {
         $videoFile = $this->getValidFileVideo();

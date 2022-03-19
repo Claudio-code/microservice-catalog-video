@@ -15,11 +15,15 @@ abstract class FileUpload extends Model
 
     public function changePath(string $newPath): void
     {
-        if (empty($newPath)) {
-            return;
-        }
+        $this->pathToSaveFiles = match (empty($newPath)) {
+            true => $this->pathToSaveFiles,
+            default => $newPath,
+        };
+    }
 
-        $this->pathToSaveFiles = $newPath;
+    private function pathOfThisFile(string|UploadedFile $file): string
+    {
+        return $this->pathToSaveFiles . $this->getFileName($file);
     }
 
     /** @param Collection<UploadedFile> $files */
@@ -44,8 +48,7 @@ abstract class FileUpload extends Model
         if (empty($file)) {
             return;
         }
-        $pathOfThisFile = "{$this->pathToSaveFiles}/{$this->getFileName($file)}";
-        Storage::delete($pathOfThisFile);
+        Storage::delete($this->pathOfThisFile($file));
     }
 
     /**
