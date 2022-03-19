@@ -4,6 +4,7 @@ namespace App\Models\AbstractModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 abstract class FileUpload extends Model
@@ -21,12 +22,10 @@ abstract class FileUpload extends Model
         $this->pathToSaveFiles = $newPath;
     }
 
-    /** @param UploadedFile[] $files */
-    public function uploadFiles(array $files): void
+    /** @param Collection<UploadedFile> $files */
+    public function uploadFiles(Collection $files): void
     {
-        foreach ($files as $file) {
-            $this->uploadFile($file);
-        }
+        $files->each($this->uploadFile(...));
     }
 
     public function uploadFile(UploadedFile $file): void
@@ -34,12 +33,10 @@ abstract class FileUpload extends Model
         $file->store($this->pathToSaveFiles);
     }
 
-    /** @param array<string|UploadedFile> $files */
-    public function deleteFiles(array $files): void
+    /** @param Collection<string|UploadedFile> $files */
+    public function deleteFiles(Collection $files): void
     {
-        foreach ($files as $file) {
-            $this->deleteFile($file);
-        }
+        $files->each($this->deleteFile(...));
     }
 
     public function deleteFile(string|UploadedFile $file): void
@@ -52,22 +49,20 @@ abstract class FileUpload extends Model
     }
 
     /**
-     * @param array<UploadedFile|string|int|bool> $attributes
-     * @return UploadedFile[]
+     * @param Collection<UploadedFile|string|int|bool> $attributes
+     * @return Collection<UploadedFile>
      */
-    public function extractFiles(array &$attributes = []): array
+    public function extractFiles(Collection &$attributes): Collection
     {
-        return array_reduce(array: $this->filesFields, callback: function ($accumulate, $field) use (&$attributes) {
-            if (!isset($attributes[$field])) {
+        return $attributes->reduce(function (Collection $accumulate, mixed $field, mixed $key) use (&$attributes) {
+            $attributeField = $attributes->get($key);
+            if ($attributeField instanceof UploadedFile === false) {
                 return $accumulate;
             }
-            if (!($attributes[$field] instanceof UploadedFile)) {
-                return $accumulate;
-            }
-            $accumulate[] = $attributes[$field];
-            $attributes[$field] = $attributes[$field]->hashName();
+            $accumulate->push($attributeField);
+            $attributes->put($key, $attributeField->hashName());
             return $accumulate;
-        }, initial: []);
+        }, Collection::empty());
     }
 
     private function getFileName(string|UploadedFile $file): string

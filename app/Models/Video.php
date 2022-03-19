@@ -67,16 +67,15 @@ class Video extends FileUpload
     /** @throws Exception */
     public function createVideo(VideoDTO $videoDTO): ?self
     {
-        $data = $videoDTO->toArray();
+        $data = $videoDTO->toCollection();
         $filesToSave = $this->extractFiles($data);
         try {
             DB::beginTransaction();
-            $object = static::create($data);
+            $object = static::create($data->toArray());
             static::matchRelationship($object, $videoDTO);
             $this->uploadFiles($filesToSave);
             $object->refresh();
             DB::commit();
-
             return $object;
         } catch (Exception $exception) {
             $this->deleteFiles($filesToSave);
@@ -88,12 +87,12 @@ class Video extends FileUpload
     /** @throws Exception */
     public function updateVideo(VideoDTO $videoDTO): bool
     {
-        $data = $videoDTO->toArray();
+        $data = $videoDTO->toCollection();
         $filesToSave = $this->extractFiles($data);
         $oldFileName = $this->video_file ?? "";
         try {
             DB::beginTransaction();
-            $updated = parent::update($data);
+            $updated = parent::update($data->toArray());
             if ($updated) {
                 $this->uploadFiles($filesToSave);
             }
