@@ -16,8 +16,7 @@ class Repository
     /** @return LazyCollection<Model> */
     public function all(): LazyCollection
     {
-        return $this->model::all()
-            ->lazy();
+        return $this->model::all()->lazy();
     }
 
     public function create(DataTransferObject $dataTransferObject): Model
@@ -26,7 +25,6 @@ class Repository
         $model = $this->model::create($dataTransferObject->toArray());
         $model->refresh();
         $this->setModel($model);
-
         return $model;
     }
 
@@ -34,7 +32,6 @@ class Repository
     {
         $this->model->update($dataTransferObject->toArray());
         $this->model->refresh();
-
         return $this->model;
     }
 
@@ -44,7 +41,6 @@ class Repository
             $this->model->delete();
             return;
         }
-
         $this->show($id)->delete();
     }
 
@@ -61,7 +57,6 @@ class Repository
     public function setModel(Model $model): self
     {
         $this->model = $model;
-
         return $this;
     }
 }

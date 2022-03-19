@@ -11,6 +11,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @property string $id
+ * @property string $title
+ * @property string $description
+ * @property int $year_launched
+ * @property bool $opened
+ * @property string $rating
+ * @property int $duration
+ * @property ?string $video_file
+ * @property ?string $banner_file
+ * @property ?string $thumb_file
+ * @property ?string $trailer_file
+ */
 class Video extends FileUpload
 {
     use HasFactory;
