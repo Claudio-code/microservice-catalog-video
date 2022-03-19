@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Tests\Traits\VideoFileUpdateTrait;
@@ -133,7 +134,7 @@ class VideoTest extends TestCase
         $video->uploadFile($videoFile);
         Storage::assertExists("video/{$videoFile->hashName()}");
 
-        $video->deleteFiles([$videoFile]);
+        $video->deleteFiles(Collection::make([$videoFile]));
         Storage::assertMissing("video/{$videoFile->hashName()}");
     }
 }
