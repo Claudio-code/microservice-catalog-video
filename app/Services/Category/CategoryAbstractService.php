@@ -9,8 +9,6 @@ use JetBrains\PhpStorm\Pure;
 
 abstract class CategoryAbstractService extends AbstractService
 {
-    protected CategoryRepository $repository;
-
     #[Pure]
     public function __construct(Category $category)
     {

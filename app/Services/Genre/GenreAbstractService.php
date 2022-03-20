@@ -9,8 +9,6 @@ use JetBrains\PhpStorm\Pure;
 
 abstract class GenreAbstractService extends AbstractService
 {
-    protected GenreRepository $repository;
-
     #[Pure]
     public function __construct(Genre $genre)
     {

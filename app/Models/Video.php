@@ -162,4 +162,13 @@ class Video extends FileUpload
     {
         return Attribute::make(get: $this->fileUrl(...));
     }
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'categories' => $this->categories()->lazy(),
+            'genres' => $this->genres()->lazy(),
+        ];
+    }
 }
