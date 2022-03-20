@@ -9,8 +9,6 @@ use JetBrains\PhpStorm\Pure;
 
 abstract class VideoAbstractService extends AbstractService
 {
-    protected VideoRepository $repository;
-
     #[Pure]
     public function __construct(Video $video)
     {

@@ -4,9 +4,11 @@ namespace App\Repositories;
 
 use App\DTO\DataTransferObject;
 use App\DTO\VideoDTO;
+use App\Factories\VideoResponseDTOFactory;
 use App\Models\Video;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\LazyCollection;
 
 class VideoRepository extends Repository
 {
@@ -46,5 +48,11 @@ class VideoRepository extends Repository
         $video->deleteFile($video->banner_file);
         $video->deleteFile($video->thumb_file);
         $video->deleteFile($video->trailer_file);
+    }
+
+    public function allVideos(): LazyCollection
+    {
+        return $this->all()
+            ->map(fn (Video $video) => VideoResponseDTOFactory::make($video));
     }
 }

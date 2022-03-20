@@ -12,7 +12,6 @@ class GetOneVideoService extends VideoAbstractService
     public function execute(string $videoId): Video
     {
         $key = RedisKeysEnum::REDIS_KEY_VIDEO_BY_ID->value . $videoId;
-
         return Cache::remember(
             $key,
             RedisTimeToLiveEnum::REDIS_TIME_TO_LIVE->value,

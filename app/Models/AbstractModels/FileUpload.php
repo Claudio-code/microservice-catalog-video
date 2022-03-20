@@ -23,7 +23,7 @@ abstract class FileUpload extends Model
 
     private function pathOfThisFile(string|UploadedFile $file): string
     {
-        return $this->pathToSaveFiles . $this->getFileName($file);
+        return $this->pathToSaveFiles . $this->fileName($file);
     }
 
     /** @param Collection<UploadedFile> $files */
@@ -68,11 +68,19 @@ abstract class FileUpload extends Model
         }, Collection::empty());
     }
 
-    private function getFileName(string|UploadedFile $file): string
+    private function fileName(string|UploadedFile $file): string
     {
         return match (is_string($file)) {
             true => $file,
             default => $file->hashName(),
+        };
+    }
+
+    protected function fileUrl(?string $filename): ?string
+    {
+        return match (is_string($filename)) {
+            true => Storage::url("{$this->pathOfThisFile($filename)}"),
+            default => null,
         };
     }
 }

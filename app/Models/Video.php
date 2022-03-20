@@ -6,6 +6,7 @@ use App\DTO\VideoDTO;
 use App\Models\AbstractModels\FileUpload;
 use App\Models\Traits\Uuid;
 use Exception;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -37,7 +38,7 @@ class Video extends FileUpload
         'trailer_file',
     ];
 
-    protected string $pathToSaveFiles = "/video/";
+    protected string $pathToSaveFiles = "video/";
 
     /** @var boolean */
     public $incrementing = false;
@@ -140,5 +141,25 @@ class Video extends FileUpload
     {
         $this->genres()->sync($genresIds);
         $this->refresh();
+    }
+
+    public function videoFile(): Attribute
+    {
+        return Attribute::make(get: $this->fileUrl(...));
+    }
+
+    public function bannerFile(): Attribute
+    {
+        return Attribute::make(get: $this->fileUrl(...));
+    }
+
+    public function thumbFile(): Attribute
+    {
+        return Attribute::make(get: $this->fileUrl(...));
+    }
+
+    public function trailerFile(): Attribute
+    {
+        return Attribute::make(get: $this->fileUrl(...));
     }
 }
